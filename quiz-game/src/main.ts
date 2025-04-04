@@ -4,7 +4,10 @@ import * as questionData from "./question-data";
 
 // flags
 
-let isNewGame: boolean = true;
+let isNewGame: boolean = true; // to start a new game
+let currentQuestion: number = 1; // to update and reset current question
+let userScore: number = 0; // to update and reset user's score
+let isAnsBtnClicked: boolean = false; // to avoid multiple results of an answer being clicked
 
 // capturing elements from the DOM
 
@@ -44,6 +47,11 @@ const initialiseDisplay = (question1: string, answers1: string[]) => {
 	answerBtnTwo.innerText = randomisedAns[1];
 	answerBtnThree.innerText = randomisedAns[2];
 	answerBtnFour.innerText = randomisedAns[3];
+	// reset defaults
+	score.innerText = `Score: ${userScore}`;
+	isAnsBtnClicked = false;
+	message.style.display = "none";
+	nextOrAgainBtn.style.display = "none";
 
 	return;
 };
@@ -61,7 +69,47 @@ const ansOrderRandomise = (answers: string[]): string[] => {
 	return newArray;
 };
 
+const handleAnswerButtonClick = (event: Event) => {
+	const target = event.currentTarget as HTMLButtonElement;
+
+	//check if an answer button has already been clicked
+	if (isAnsBtnClicked) {
+		return;
+	}
+
+	// currently all placeholders for question 1. seperate functions to be made for each question check
+
+	// check if the answer is correct
+	if (target.innerText === "Tokyo") {
+		//change answer button to green
+		target.style.backgroundColor = "#7af0bf";
+		target.style.border = "2px solid #45beaa";
+		//update user score
+		userScore += 5;
+		score.innerText = `Score: ${userScore}`;
+		//display message
+		message.style.display = "initial";
+		message.innerText = "Correct! Great job";
+	} else {
+		//change answer button to red
+		target.style.backgroundColor = "#f4acb7ff";
+		target.style.border = "2px solid #c7576f";
+		//display message
+		message.style.display = "initial";
+		message.innerText = "Better luck next time";
+	}
+	//display next question button
+	nextOrAgainBtn.style.display = "initial";
+
+	isAnsBtnClicked = true;
+};
+
+const handleNextButtonClick = (event: Event) => {};
+
 if (isNewGame) {
 	initialiseDisplay(questionData.question1, questionData.answers1);
 	isNewGame = false;
 }
+
+answerBtns.forEach((button) => button.addEventListener("click", handleAnswerButtonClick));
+nextOrAgainBtn.addEventListener("click", handleNextButtonClick);

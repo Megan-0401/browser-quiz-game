@@ -1,4 +1,4 @@
-# Browser Quiz Qame
+# Browser Quiz Game
 
 ## Overview
 
@@ -56,6 +56,7 @@ Once all the questions are answered, the player will be shown their total score 
 ### Edge cases
 
 -   If the user clicks an answer button twice for the same question, then there should be no response from the buttons
+    -   The score should only update once
 
 ## Extra
 
