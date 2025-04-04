@@ -11,6 +11,7 @@ let isAnsBtnClicked: boolean = false; // to avoid multiple results of an answer 
 
 // capturing elements from the DOM
 
+const questionTitle = document.querySelector<HTMLHeadingElement>("#questionTitle");
 const questionText = document.querySelector<HTMLDivElement>(".question");
 
 const answerBtns = document.querySelectorAll<HTMLButtonElement>(".answers__btn");
@@ -24,6 +25,7 @@ const nextOrAgainBtn = document.querySelector<HTMLButtonElement>("#nextOrAgain")
 const message = document.querySelector<HTMLDivElement>("#message");
 
 if (
+	!questionTitle ||
 	!questionText ||
 	!answerBtns ||
 	!answerBtnOne ||
@@ -39,21 +41,48 @@ if (
 
 // initialise display to show Question 1
 const initialiseDisplay = (question1: string, answers1: string[]) => {
-	questionText.innerText = question1;
+	updateDisplay(question1, answers1);
+	// reset defaults
+	score.innerText = `Score: ${userScore}`;
+	currentQuestion = 1;
+	questionTitle.innerText = `Question ${currentQuestion}`;
+	return;
+};
+
+const updateDisplay = (question: string, answers: string[]) => {
+	questionText.innerText = question;
 	// randomise the order of the array
-	const randomisedAns: string[] = ansOrderRandomise(answers1);
+	const randomisedAns: string[] = ansOrderRandomise(answers);
 	// then assign each answer
 	answerBtnOne.innerText = randomisedAns[0];
 	answerBtnTwo.innerText = randomisedAns[1];
 	answerBtnThree.innerText = randomisedAns[2];
 	answerBtnFour.innerText = randomisedAns[3];
-	// reset defaults
-	score.innerText = `Score: ${userScore}`;
-	isAnsBtnClicked = false;
+	questionTitle.innerText = `Question ${currentQuestion}`;
+	// resetting defaults of message, next button and if answer button has been clicked
 	message.style.display = "none";
 	nextOrAgainBtn.style.display = "none";
+	isAnsBtnClicked = false;
+};
 
-	return;
+const displayNextQuestion = (questionNum: number) => {
+	switch (questionNum) {
+		case 2:
+			updateDisplay(questionData.question2, questionData.answers2);
+			break;
+		case 3:
+			updateDisplay(questionData.question3, questionData.answers3);
+			break;
+		case 4:
+			updateDisplay(questionData.question4, questionData.answers4);
+			break;
+		case 5:
+			updateDisplay(questionData.question5, questionData.answers5);
+			break;
+		default:
+			//end quiz
+			break;
+	}
 };
 
 // randomise answer order
@@ -104,7 +133,18 @@ const handleAnswerButtonClick = (event: Event) => {
 	isAnsBtnClicked = true;
 };
 
-const handleNextButtonClick = (event: Event) => {};
+const handleNextButtonClick = () => {
+	// update current question
+	currentQuestion++;
+	// update div display to next question
+	displayNextQuestion(currentQuestion);
+	// reset modifications to buttons
+	answerBtns.forEach((btn) => {
+		btn.style.backgroundColor = "#53d8fbff";
+		btn.style.border = "2px solid #66c3ffff";
+	});
+	isAnsBtnClicked = false;
+};
 
 if (isNewGame) {
 	initialiseDisplay(questionData.question1, questionData.answers1);

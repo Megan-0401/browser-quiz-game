@@ -37,6 +37,7 @@ h1 {
 }
 .question {
 	color: palette.$text-col2;
+	text-align: center;
 }
 .answers {
 	&__btn {
@@ -71,7 +72,6 @@ h1 {
 	}
 	.section {
 		width: 50vw;
-		height: 400px;
 	}
 	.question {
 		font-size: typography.$lg-question-font-size;
