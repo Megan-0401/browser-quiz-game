@@ -1,1 +1,1 @@
-# browser-quiz-game
+# Browser Quiz Qame
