@@ -7,6 +7,12 @@
 	padding: 20px;
 }
 
+@mixin btn-style {
+	border-radius: 1.25vw;
+	padding: 10px;
+	background-color: palette.$btn-col;
+}
+
 body {
 	background-color: palette.$background-col;
 }
@@ -34,11 +40,10 @@ h1 {
 }
 .answers {
 	&__btn {
+		@include btn-style();
 		background-color: palette.$btn-col;
 		color: palette.$text-col1;
 		border: 2px solid palette.$btn-border-col;
-		border-radius: 1.25vw;
-		padding: 10px;
 	}
 }
 #score {
@@ -46,9 +51,15 @@ h1 {
 }
 #message {
 	display: none;
+	color: palette.$text-col3;
+	margin: 10px;
 }
 #nextOrAgain {
 	display: none;
+	@include btn-style();
+	color: palette.$text-col2;
+	margin: 20px;
+	border: none;
 }
 
 @include media-queries.desktop {
@@ -77,6 +88,12 @@ h1 {
 	#score {
 		font-size: typography.$lg-score-font-size;
 	}
+	#message {
+		font-size: typography.$lg-message-font-size;
+	}
+	#nextOrAgain {
+		font-size: typography.$lg-button-font-size;
+	}
 }
 
 @include media-queries.mobile {
@@ -104,5 +121,11 @@ h1 {
 	}
 	#score {
 		font-size: typography.$s-score-font-size;
+	}
+	#message {
+		font-size: typography.$s-message-font-size;
+	}
+	#nextOrAgain {
+		font-size: typography.$s-button-font-size;
 	}
 }

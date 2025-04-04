@@ -17,8 +17,8 @@ Once all the questions are answered, the player will be shown their total score 
     -   Question => 1 div
     -   Answers => 1 div, 4 buttons
         -   Each button has their own ID, so TS can assign the correct answer
--   Score => 1 div
-    -   Default value will be set to 0
+    -   Score => 1 div
+        -   Default value will be set to 0
 -   Congratulatory message
     -   Only displays once an answer has been clicked on
 -   Next question/play again button => 1 button
@@ -29,7 +29,6 @@ Once all the questions are answered, the player will be shown their total score 
 -   The buttons will have rounding to make them appear smoother
     -   On mobile, buttons are stacked on top of one another
     -   On desktop (/tablet), buttons are displayed in a 2x2 grid
--   The score will appear in the top right corner of the page
 -   The message and `next question` button will appear underneath the question div
 
 ### TypeScript
