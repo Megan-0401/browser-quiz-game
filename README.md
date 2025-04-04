@@ -23,7 +23,6 @@ Once all the questions are answered, the player will be shown their total score 
     -   Only displays once an answer has been clicked on
 -   Next question/play again button => 1 button
     -   Only displays once an answer has been clicked on
--   (Additional) Hint button => 1 button
 
 ### SCSS
 
@@ -32,7 +31,6 @@ Once all the questions are answered, the player will be shown their total score 
     -   On desktop (/tablet), buttons are displayed in a 2x2 grid
 -   The score will appear in the top right corner of the page
 -   The message and `next question` button will appear underneath the question div
--   (Additional) The hint button will appear on the left side of the question div
 
 ### TypeScript
 
@@ -54,3 +52,17 @@ Once all the questions are answered, the player will be shown their total score 
     -   The user's total score will be displayed
     -   A message will display based on how many questions they got correct
     -   A button will display prompting them to `play again`, resetting the flag and the questions to the beginning
+
+### Edge cases
+
+-   If the user clicks an answer button twice for the same question, then there should be no response from the buttons
+
+## Extra
+
+### Hint button
+
+Possibility of a hint button:
+
+-   Displays on the left side of the question div
+-   If clicked, it will display a small hint
+-   If correct answers increase score by 5, then using a hint will decrease score by 2
