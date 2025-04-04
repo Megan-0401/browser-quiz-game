@@ -1,11 +1,11 @@
 import "./style.scss";
-
 import * as questionData from "./question-data";
+import * as checkQuestion from "./check-question-correct";
 
 // flags
 
-let isNewGame: boolean = true; // to start a new game
 let currentQuestion: number = 1; // to update and reset current question
+let maxQuestion: number = 5; // to compare to current question
 let userScore: number = 0; // to update and reset user's score
 let isAnsBtnClicked: boolean = false; // to avoid multiple results of an answer being clicked
 
@@ -21,8 +21,8 @@ const answerBtnThree = document.querySelector<HTMLButtonElement>("#answer-three"
 const answerBtnFour = document.querySelector<HTMLButtonElement>("#answer-four");
 
 const score = document.querySelector<HTMLDivElement>("#score");
-const nextOrAgainBtn = document.querySelector<HTMLButtonElement>("#nextOrAgain");
 const message = document.querySelector<HTMLDivElement>("#message");
+const nextBtn = document.querySelector<HTMLButtonElement>("#nextBtn");
 
 if (
 	!questionTitle ||
@@ -33,22 +33,13 @@ if (
 	!answerBtnThree ||
 	!answerBtnFour ||
 	!score ||
-	!nextOrAgainBtn ||
+	!nextBtn ||
 	!message
 ) {
 	throw new Error("Some elements cannot be found.");
 }
 
-// initialise display to show Question 1
-const initialiseDisplay = (question1: string, answers1: string[]) => {
-	updateDisplay(question1, answers1);
-	// reset defaults
-	score.innerText = `Score: ${userScore}`;
-	currentQuestion = 1;
-	questionTitle.innerText = `Question ${currentQuestion}`;
-	return;
-};
-
+// update display to current question
 const updateDisplay = (question: string, answers: string[]) => {
 	questionText.innerText = question;
 	// randomise the order of the array
@@ -59,10 +50,28 @@ const updateDisplay = (question: string, answers: string[]) => {
 	answerBtnThree.innerText = randomisedAns[2];
 	answerBtnFour.innerText = randomisedAns[3];
 	questionTitle.innerText = `Question ${currentQuestion}`;
+	// reset modifications to buttons
+	answerBtns.forEach((btn) => {
+		btn.style.backgroundColor = "#53d8fbff";
+		btn.style.border = "2px solid #66c3ffff";
+	});
 	// resetting defaults of message, next button and if answer button has been clicked
 	message.style.display = "none";
-	nextOrAgainBtn.style.display = "none";
+	nextBtn.style.display = "none";
 	isAnsBtnClicked = false;
+};
+
+// initialise display to show Question 1
+const initialiseDisplay = (question1: string, answers1: string[]) => {
+	updateDisplay(question1, answers1);
+	// reset defaults
+	userScore = 0;
+	score.innerText = `Score: ${userScore}`;
+	currentQuestion = 1;
+	questionTitle.innerText = `Question ${currentQuestion}`;
+	nextBtn.innerText = "Next Question";
+	answerBtns.forEach((btn) => (btn.style.display = "initial"));
+	return;
 };
 
 const displayNextQuestion = (questionNum: number) => {
@@ -98,9 +107,30 @@ const ansOrderRandomise = (answers: string[]): string[] => {
 	return newArray;
 };
 
+const displayResult = () => {
+	questionTitle.innerText = "Result";
+	answerBtns.forEach((btn) => (btn.style.display = "none"));
+	message.style.display = "none";
+	nextBtn.innerText = "Play again";
+	// message depending on score
+	if (userScore === 25) {
+		questionText.innerText = "Congrats! You answered all the questions correctly.";
+	} else if (userScore === 20) {
+		questionText.innerText = "Goob job! You answered most questions correctly.";
+	} else if (userScore === 15) {
+		questionText.innerText = "Nice! You answered some questions correctly.";
+	} else if (userScore === 10) {
+		questionText.innerText = "Not bad. You answered a few questions correctly.";
+	} else if (userScore === 5) {
+		questionText.innerText = "You answered one question correctly. Why don't you try again?";
+	} else {
+		questionText.innerText =
+			"Looks like you don't know a lot about these topics. No worries! Just try again.";
+	}
+};
+
 const handleAnswerButtonClick = (event: Event) => {
 	const target = event.currentTarget as HTMLButtonElement;
-
 	//check if an answer button has already been clicked
 	if (isAnsBtnClicked) {
 		return;
@@ -108,8 +138,29 @@ const handleAnswerButtonClick = (event: Event) => {
 
 	// currently all placeholders for question 1. seperate functions to be made for each question check
 
-	// check if the answer is correct
-	if (target.innerText === "Tokyo") {
+	//check if answer for current question is correct
+	let isQuestionCorrect = false;
+	switch (currentQuestion) {
+		case 1:
+			isQuestionCorrect = checkQuestion.checkQuestionOne(target.innerText);
+			break;
+		case 2:
+			isQuestionCorrect = checkQuestion.checkQuestionTwo(target.innerText);
+			break;
+		case 3:
+			isQuestionCorrect = checkQuestion.checkQuestionThree(target.innerText);
+			break;
+		case 4:
+			isQuestionCorrect = checkQuestion.checkQuestionFour(target.innerText);
+			break;
+		case 5:
+			isQuestionCorrect = checkQuestion.checkQuestionFive(target.innerText);
+			break;
+		default:
+			break;
+	}
+
+	if (isQuestionCorrect) {
 		//change answer button to green
 		target.style.backgroundColor = "#7af0bf";
 		target.style.border = "2px solid #45beaa";
@@ -127,29 +178,30 @@ const handleAnswerButtonClick = (event: Event) => {
 		message.style.display = "initial";
 		message.innerText = "Better luck next time";
 	}
-	//display next question button
-	nextOrAgainBtn.style.display = "initial";
 
+	// check if the current question is the last
+	if (currentQuestion === maxQuestion) {
+		nextBtn.innerText = "Show results";
+	}
+
+	nextBtn.style.display = "initial";
 	isAnsBtnClicked = true;
 };
 
 const handleNextButtonClick = () => {
-	// update current question
-	currentQuestion++;
-	// update div display to next question
-	displayNextQuestion(currentQuestion);
-	// reset modifications to buttons
-	answerBtns.forEach((btn) => {
-		btn.style.backgroundColor = "#53d8fbff";
-		btn.style.border = "2px solid #66c3ffff";
-	});
-	isAnsBtnClicked = false;
+	if (nextBtn.innerText === "Next Question") {
+		// update current question
+		currentQuestion++;
+		// update div display to next question
+		displayNextQuestion(currentQuestion);
+	} else if (nextBtn.innerText === "Show results") {
+		displayResult();
+	} else {
+		initialiseDisplay(questionData.question1, questionData.answers1);
+	}
 };
 
-if (isNewGame) {
-	initialiseDisplay(questionData.question1, questionData.answers1);
-	isNewGame = false;
-}
+initialiseDisplay(questionData.question1, questionData.answers1);
 
 answerBtns.forEach((button) => button.addEventListener("click", handleAnswerButtonClick));
-nextOrAgainBtn.addEventListener("click", handleNextButtonClick);
+nextBtn.addEventListener("click", handleNextButtonClick);

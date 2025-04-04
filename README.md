@@ -49,6 +49,7 @@ Once all the questions are answered, the player will be shown their total score 
         -   The `next question` button will be hidden again
         -   The question title will be updated (e.g. going from `Question 1` to `Question 2`)
 -   A flag will be set to track how many questions have been answered. When all questions have been answered:
+    -   The `next question` button will change to `show results`
     -   The user's total score will be displayed
     -   A message will display based on how many questions they got correct
     -   A button will display prompting them to `play again`, resetting the flag and the questions to the beginning

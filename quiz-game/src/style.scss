@@ -13,6 +13,14 @@
 	background-color: palette.$btn-col;
 }
 
+@mixin btn-style-2 {
+	display: none;
+	@include btn-style();
+	color: palette.$text-col2;
+	margin: 20px;
+	border: none;
+}
+
 body {
 	background-color: palette.$background-col;
 }
@@ -55,12 +63,8 @@ h1 {
 	color: palette.$text-col3;
 	margin: 10px;
 }
-#nextOrAgain {
-	display: none;
-	@include btn-style();
-	color: palette.$text-col2;
-	margin: 20px;
-	border: none;
+.btn {
+	@include btn-style-2();
 }
 
 @include media-queries.desktop {
@@ -91,7 +95,7 @@ h1 {
 	#message {
 		font-size: typography.$lg-message-font-size;
 	}
-	#nextOrAgain {
+	.btn {
 		font-size: typography.$lg-button-font-size;
 	}
 }
@@ -124,7 +128,7 @@ h1 {
 	#message {
 		font-size: typography.$s-message-font-size;
 	}
-	#nextOrAgain {
+	.btn {
 		font-size: typography.$s-button-font-size;
 	}
 }
