@@ -33,6 +33,7 @@ Once all the questions are answered, the player will be shown their total score 
 
 ### TypeScript
 
+-   When the page loads, the question div should update to display the first question
 -   Event listeners that watch for button clicks
     -   When an answer button is clicked, it will check if the answer is correct
     -   If correct:
