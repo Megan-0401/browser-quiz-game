@@ -6,6 +6,8 @@ A browser quiz game that displays a question to the user and four subsequent ans
 
 If the user clicks on the correct answer, their score will increase. Once the user has answered the question, they will be prompted by a button that will display the next question.
 
+The user will also be presented with a `50/50` option, that will remove two incorrect answers. This will cost the player two points to use per question.
+
 Once all the questions are answered, the player will be shown their total score alongside a congratulatory message that depends on what score they obtained. They will then be allowed to click a button to play again, resetting the quiz.
 
 ## Project Breakdown
@@ -23,6 +25,7 @@ Once all the questions are answered, the player will be shown their total score 
     -   Only displays once an answer has been clicked on
 -   Next question/play again button => 1 button
     -   Only displays once an answer has been clicked on
+-   `50/50` Option => 1 button
 
 ### SCSS
 
@@ -30,6 +33,7 @@ Once all the questions are answered, the player will be shown their total score 
     -   On mobile, buttons are stacked on top of one another
     -   On desktop (/tablet), buttons are displayed in a 2x2 grid
 -   The message and `next question` button will appear underneath the question div
+-   The `50/50` button will appear on the right side of the question div
 
 ### TypeScript
 
@@ -38,26 +42,32 @@ Once all the questions are answered, the player will be shown their total score 
     -   When an answer button is clicked, it will check if the answer is correct
     -   If correct:
         -   The answer button colour will turn green
-        -   The user's score will update
+        -   The user's score will update, adding 5 to their total score
         -   A congratulatory message will display (e.g. `Correct! Great job`)
     -   If incorrect:
         -   The answer button colour will turn red
         -   An encouraging message will display (e.g. `Better luck next time`)
+    -   When the `50/50` button is clicked:
+        -   Two incorrect answers will be removed
+        -   The user's score will decrease by 2
+        -   The button will be greyed out, and no longer be able to be clicked on
     -   The `next question` button will then display. When clicked on:
         -   The current question div display will update, showing the next question and answers
-        -   Any previous colour modification will be reset
-        -   The `next question` button will be hidden again
+        -   Any previous modification to the buttons will be reset
+        -   The `next question` button and message will be hidden
         -   The question title will be updated (e.g. going from `Question 1` to `Question 2`)
 -   A flag will be set to track how many questions have been answered. When all questions have been answered:
     -   The `next question` button will change to `show results`
     -   The user's total score will be displayed
-    -   A message will display based on how many questions they got correct
-    -   A button will display prompting them to `play again`, resetting the flag and the questions to the beginning
+    -   A message will display based their score
+    -   The `show results` button will change to `play again`, resetting the flag and the questions to the beginning
 
 ### Edge cases
 
 -   If the user clicks an answer button twice for the same question, then there should be no response from the buttons
     -   The score should only update once
+    -   Other buttons should not change colour
+-   The `50/50` button should not respond if the user has already clicked on an answer
 
 ## Extra
 

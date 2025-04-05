@@ -1,6 +1,5 @@
 import "./style.scss";
 import * as questionData from "./question-data";
-import * as checkQuestion from "./check-question-correct";
 
 // flags
 
@@ -129,6 +128,33 @@ const displayResult = () => {
 	}
 };
 
+// compares chosen answer to correct answer
+const checkCorrectAnswer = (answer: string, correctAns: string): boolean => {
+	if (answer === correctAns) {
+		return true;
+	} else {
+		return false;
+	}
+};
+
+// grabs correct answer
+const getCorrectAnswer = (): string => {
+	switch (currentQuestion) {
+		case 1:
+			return questionData.answers1[0];
+		case 2:
+			return questionData.answers2[0];
+		case 3:
+			return questionData.answers3[0];
+		case 4:
+			return questionData.answers4[0];
+		case 5:
+			return questionData.answers5[0];
+		default:
+			throw new Error("Correct answer cannot be found.");
+	}
+};
+
 const handleAnswerButtonClick = (event: Event) => {
 	const target = event.currentTarget as HTMLButtonElement;
 	//check if an answer button has already been clicked
@@ -136,29 +162,9 @@ const handleAnswerButtonClick = (event: Event) => {
 		return;
 	}
 
-	// currently all placeholders for question 1. seperate functions to be made for each question check
-
 	//check if answer for current question is correct
 	let isQuestionCorrect = false;
-	switch (currentQuestion) {
-		case 1:
-			isQuestionCorrect = checkQuestion.checkQuestionOne(target.innerText);
-			break;
-		case 2:
-			isQuestionCorrect = checkQuestion.checkQuestionTwo(target.innerText);
-			break;
-		case 3:
-			isQuestionCorrect = checkQuestion.checkQuestionThree(target.innerText);
-			break;
-		case 4:
-			isQuestionCorrect = checkQuestion.checkQuestionFour(target.innerText);
-			break;
-		case 5:
-			isQuestionCorrect = checkQuestion.checkQuestionFive(target.innerText);
-			break;
-		default:
-			break;
-	}
+	isQuestionCorrect = checkCorrectAnswer(target.innerText, getCorrectAnswer());
 
 	if (isQuestionCorrect) {
 		//change answer button to green
