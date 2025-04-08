@@ -8,9 +8,9 @@
 }
 
 @mixin btn-style {
-	border-radius: 1.25vw;
+	border-radius: 15px;
 	padding: 10px;
-	background-color: palette.$btn-col;
+	background-color: palette.$btn-col-1;
 }
 
 @mixin btn-style-2 {
@@ -50,13 +50,29 @@ h1 {
 .answers {
 	&__btn {
 		@include btn-style();
-		background-color: palette.$btn-col;
 		color: palette.$text-col1;
-		border: 2px solid palette.$btn-border-col;
+		border: 2px solid palette.$btn-border-col-1;
+		min-height: 55px;
 	}
+}
+#allButtons {
+	display: flex;
+	align-items: center;
+	margin: 10px;
+	gap: 5vw;
+}
+#btnFiftyFifty {
+	@include btn-style();
+	border: 2px solid palette.$btn-border-col-2;
+	background-color: palette.$btn-col-2;
+	color: palette.$text-col2;
+	border-radius: 100%;
+	width: 85px;
+	height: 85px;
 }
 #score {
 	color: palette.$text-col3;
+	font-size: typography.$score-font-size;
 }
 #message {
 	display: none;
@@ -69,7 +85,8 @@ h1 {
 
 @include media-queries.desktop {
 	.whole-display {
-		margin: 10vw;
+		margin: auto;
+		width: 55vw;
 	}
 	h1 {
 		font-size: typography.$lg-header-font-size;
@@ -86,11 +103,11 @@ h1 {
 		gap: 15px;
 		&__btn {
 			font-size: typography.$lg-button-font-size;
-			width: 23vw;
+			width: 18vw;
 		}
 	}
-	#score {
-		font-size: typography.$lg-score-font-size;
+	#btnFiftyFifty {
+		font-size: typography.$lg-button-font-size-2;
 	}
 	#message {
 		font-size: typography.$lg-message-font-size;
@@ -119,11 +136,11 @@ h1 {
 		gap: 10px;
 		&__btn {
 			font-size: typography.$s-button-font-size;
-			width: 60vw;
+			width: 50vw;
 		}
 	}
-	#score {
-		font-size: typography.$s-score-font-size;
+	#btnFiftyFifty {
+		font-size: typography.$s-button-font-size-2;
 	}
 	#message {
 		font-size: typography.$s-message-font-size;

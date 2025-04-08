@@ -19,21 +19,21 @@ Once all the questions are answered, the player will be shown their total score 
     -   Question => 1 div
     -   Answers => 1 div, 4 buttons
         -   Each button has their own ID, so TS can assign the correct answer
+    -   `50/50` Option => 1 button
     -   Score => 1 div
         -   Default value will be set to 0
 -   Congratulatory message
     -   Only displays once an answer has been clicked on
 -   Next question/play again button => 1 button
     -   Only displays once an answer has been clicked on
--   `50/50` Option => 1 button
 
 ### SCSS
 
 -   The buttons will have rounding to make them appear smoother
     -   On mobile, buttons are stacked on top of one another
     -   On desktop (/tablet), buttons are displayed in a 2x2 grid
+-   The answer buttons and the `50/50` button will be displayed on the same row in a flex container
 -   The message and `next question` button will appear underneath the question div
--   The `50/50` button will appear on the right side of the question div
 
 ### TypeScript
 
@@ -48,7 +48,7 @@ Once all the questions are answered, the player will be shown their total score 
         -   The answer button colour will turn red
         -   An encouraging message will display (e.g. `Better luck next time`)
     -   When the `50/50` button is clicked:
-        -   Two incorrect answers will be removed
+        -   Two randomly chosen incorrect answers will be removed
         -   The user's score will decrease by 2
         -   The button will be greyed out, and no longer be able to be clicked on
     -   The `next question` button will then display. When clicked on:
