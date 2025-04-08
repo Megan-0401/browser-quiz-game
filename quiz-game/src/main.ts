@@ -45,7 +45,7 @@ if (
 const updateDisplay = (question: string, answers: string[]) => {
 	questionText.innerText = question;
 	// randomise the order of the array
-	const randomisedAns: string[] = ansOrderRandomise(answers);
+	const randomisedAns: string[] = randomiseAnsOrder(answers);
 	// then assign each answer
 	answerBtnOne.innerText = randomisedAns[0];
 	answerBtnTwo.innerText = randomisedAns[1];
@@ -94,8 +94,7 @@ const displayNextQuestion = () => {
 	}
 };
 
-// randomise answer order
-const ansOrderRandomise = (answers: string[]): string[] => {
+const randomiseAnsOrder = (answers: string[]): string[] => {
 	const newArray: string[] = [...answers];
 
 	for (let i: number = 0; i < answers.length; i++) {
@@ -113,35 +112,25 @@ const displayResult = () => {
 	message.style.display = "none";
 	fiftyFiftyBtn.style.display = "none";
 	nextBtn.innerText = "Play again";
-	// message depending on score
+	questionText.innerText = getResultMessage();
+};
+
+const getResultMessage = (): string => {
 	if (userScore === 25) {
-		questionText.innerText =
-			"Congrats! You answered all the questions correctly without any help.";
+		return "Congrats! You answered all the questions correctly without any help.";
 	} else if (userScore <= 24 && userScore >= 20) {
-		questionText.innerText = "Good job! You really know your stuff.";
+		return "Good job! You really know your stuff.";
 	} else if (userScore <= 19 && userScore >= 15) {
-		questionText.innerText = "Nice! You have plenty good knowledge.";
+		return "Nice! You have plenty good knowledge.";
 	} else if (userScore <= 14 && userScore >= 10) {
-		questionText.innerText = "Not bad. See if you can get a higher score next time.";
+		return "Not bad. See if you can get a higher score next time.";
 	} else if (userScore <= 9 && userScore >= 5) {
-		questionText.innerText =
-			"You know a few things. Why don't you research a few topics and try again.";
+		return "You know a few things. Why don't you research a few topics and try again.";
 	} else {
-		questionText.innerText =
-			"Looks like you don't know a lot about these topics. No worries! Just try again.";
+		return "Looks like you don't know a lot about these topics. No worries! Just try again.";
 	}
 };
 
-// compares chosen answer to correct answer
-const checkCorrectAnswer = (answer: string, correctAns: string): boolean => {
-	if (answer === correctAns) {
-		return true;
-	} else {
-		return false;
-	}
-};
-
-// grabs correct answer
 const getCorrectAnswer = (): string => {
 	switch (currentQuestion) {
 		case 1:
@@ -170,9 +159,31 @@ const ungreyButton = () => {
 	fiftyFiftyBtn.style.border = "2px solid #3770ca";
 	fiftyFiftyBtn.style.color = "#345995";
 	answerBtns.forEach((btn) => {
+		btn.style.color = "#363732ff";
 		btn.style.backgroundColor = "#53d8fbff";
 		btn.style.border = "2px solid #66c3ffff";
 	});
+};
+
+const correctAnswer = (button: HTMLButtonElement) => {
+	//change answer button to green
+	button.style.backgroundColor = "#7af0bf";
+	button.style.border = "2px solid #289683";
+	button.style.color = "#289683";
+	//update user score
+	userScore += 5;
+	score.innerText = `Score: ${userScore}`;
+	//display message
+	message.innerText = "Correct! Great job";
+};
+
+const incorrectAnswer = (button: HTMLButtonElement) => {
+	//change answer button to red
+	button.style.backgroundColor = "#f4acb7ff";
+	button.style.border = "2px solid #c7576f";
+	button.style.color = "#c7576f";
+	//display message
+	message.innerText = "Better luck next time";
 };
 
 const handleAnswerButtonClick = (event: Event) => {
@@ -181,38 +192,20 @@ const handleAnswerButtonClick = (event: Event) => {
 	if (isAnsBtnClicked) {
 		return;
 	}
-
-	//grey out 50/50 button
+	//grey out buttons
 	greyOutButton(fiftyFiftyBtn);
-
+	answerBtns.forEach((button) => greyOutButton(button));
 	//check if answer for current question is correct
-	let isQuestionCorrect = false;
-	isQuestionCorrect = checkCorrectAnswer(target.innerText, getCorrectAnswer());
-
-	if (isQuestionCorrect) {
-		//change answer button to green
-		target.style.backgroundColor = "#7af0bf";
-		target.style.border = "2px solid #45beaa";
-		//update user score
-		userScore += 5;
-		score.innerText = `Score: ${userScore}`;
-		//display message
-		message.style.display = "initial";
-		message.innerText = "Correct! Great job";
+	if (target.innerText === getCorrectAnswer()) {
+		correctAnswer(target);
 	} else {
-		//change answer button to red
-		target.style.backgroundColor = "#f4acb7ff";
-		target.style.border = "2px solid #c7576f";
-		//display message
-		message.style.display = "initial";
-		message.innerText = "Better luck next time";
+		incorrectAnswer(target);
 	}
-
 	// check if the current question is the last
 	if (currentQuestion === maxQuestion) {
 		nextBtn.innerText = "Show results";
 	}
-
+	message.style.display = "initial";
 	nextBtn.style.display = "initial";
 	isAnsBtnClicked = true;
 };
@@ -230,10 +223,7 @@ const handleNextButtonClick = () => {
 	}
 };
 
-const handleFiftyButtonClick = () => {
-	if (isAnsBtnClicked || isFiftyBtnClicked) {
-		return;
-	}
+const removeAnswers = () => {
 	let removedAnswers = 0;
 	let firstRemovedIndex;
 	do {
@@ -247,6 +237,13 @@ const handleFiftyButtonClick = () => {
 			firstRemovedIndex = randomIndex;
 		}
 	} while (removedAnswers < 2);
+};
+
+const handleFiftyButtonClick = () => {
+	if (isAnsBtnClicked || isFiftyBtnClicked) {
+		return;
+	}
+	removeAnswers();
 	userScore -= 2;
 	score.innerText = `Score: ${userScore}`;
 	greyOutButton(fiftyFiftyBtn);

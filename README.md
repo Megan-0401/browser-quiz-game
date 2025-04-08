@@ -47,6 +47,7 @@ Once all the questions are answered, the player will be shown their total score 
     -   If incorrect:
         -   The answer button colour will turn red
         -   An encouraging message will display (e.g. `Better luck next time`)
+    -   All other answer buttons will be greyed out
     -   When the `50/50` button is clicked:
         -   Two randomly chosen incorrect answers will be removed
         -   The user's score will decrease by 2
