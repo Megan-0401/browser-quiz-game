@@ -1,7 +1,10 @@
 import { getCorrectAnswer } from "../main";
 
 // 50/50 button
-export const removeAnswers = (answerBtns: NodeListOf<HTMLButtonElement>) => {
+export const removeAnswers = (
+	answerBtns: NodeListOf<HTMLButtonElement>,
+	randomAnsIndex: string[]
+) => {
 	let removedAnswers = 0;
 	let firstRemovedIndex;
 	do {
@@ -13,6 +16,7 @@ export const removeAnswers = (answerBtns: NodeListOf<HTMLButtonElement>) => {
 			answerBtns[randomIndex].innerText = "";
 			removedAnswers++;
 			firstRemovedIndex = randomIndex;
+			randomAnsIndex.push(answerBtns[randomIndex].innerText);
 		}
 	} while (removedAnswers < 2);
 };

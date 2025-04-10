@@ -15,12 +15,18 @@ import {
 } from "./Utilities/answerButtonUtilities";
 import { removeAnswers } from "./Utilities/helpButtonUtilities";
 
+// goal -> fix 50/50 function
+// the removed answers should not be able to be clicked on
+// 1. record the two removed answer indexes
+// conditional -> if removed answer is clicked, do nothing
+
 // flags
 let currentQuestion: number = 1; // to update and reset current question
 let maxQuestion: number = 5; // to compare to current question
 let userScore: number = 0; // to update and reset user's score
 let isAnsBtnClicked: boolean = false; // to avoid multiple results of an answer being clicked
 let isFiftyBtnClicked: boolean = false;
+let removedAnswers: string[] = []; // records the removed answers to prevent them from being clicked on
 
 // capturing elements from the DOM
 const questionTitle = document.querySelector<HTMLHeadingElement>("#questionTitle");
@@ -71,6 +77,7 @@ const updateDisplay = (question: string, answers: string[]) => {
 	nextBtn.style.display = "none";
 	isAnsBtnClicked = false;
 	isFiftyBtnClicked = false;
+	removedAnswers = [];
 };
 
 // initialise display to show Question 1
@@ -149,8 +156,8 @@ export const getCorrectAnswer = (): string => {
 
 const handleAnswerButtonClick = (event: Event) => {
 	const target = event.currentTarget as HTMLButtonElement;
-	//check if an answer button has already been clicked
-	if (isAnsBtnClicked) {
+	//check if an answer button has already been clicked OR has been removed by 50/50
+	if (isAnsBtnClicked || removedAnswers.includes(target.innerText)) {
 		return;
 	}
 	//grey out buttons
@@ -188,7 +195,7 @@ const handleFiftyButtonClick = () => {
 	if (isAnsBtnClicked || isFiftyBtnClicked) {
 		return;
 	}
-	removeAnswers(answerBtns);
+	removeAnswers(answerBtns, removedAnswers);
 	userScore -= 2;
 	score.innerText = `Score: ${userScore}`;
 	greyOutButton(fiftyFiftyBtn);

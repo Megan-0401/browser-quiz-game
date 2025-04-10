@@ -49,7 +49,7 @@ Once all the questions are answered, the player will be shown their total score 
         -   An encouraging message will display (e.g. `Better luck next time`)
     -   All other answer buttons will be greyed out
     -   When the `50/50` button is clicked:
-        -   Two randomly chosen incorrect answers will be removed
+        -   Two randomly chosen incorrect answers will be removed, and they will not be able to be clicked on
         -   The user's score will decrease by 2
         -   The button will be greyed out, and no longer be able to be clicked on
     -   The `next question` button will then display. When clicked on:
