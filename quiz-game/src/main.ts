@@ -1,8 +1,19 @@
 import "./style.scss";
-import * as questionData from "./question-data";
-
-// goal -> streamline code into different files
-//
+import * as questionData from "./questionData";
+import {
+	greyOutButton,
+	modifyBtnOnHover,
+	modifyHelpBtnOnHover,
+	ungreyAllButtons,
+	ungreyAnsButton,
+	ungreyHelpButton,
+} from "./Utilities/buttonDisplay";
+import {
+	randomiseAnsOrder,
+	correctAnswer,
+	incorrectAnswer,
+} from "./Utilities/answerButtonUtilities";
+import { removeAnswers } from "./Utilities/helpButtonUtilities";
 
 // flags
 let currentQuestion: number = 1; // to update and reset current question
@@ -12,7 +23,6 @@ let isAnsBtnClicked: boolean = false; // to avoid multiple results of an answer 
 let isFiftyBtnClicked: boolean = false;
 
 // capturing elements from the DOM
-
 const questionTitle = document.querySelector<HTMLHeadingElement>("#questionTitle");
 const questionText = document.querySelector<HTMLDivElement>(".question");
 
@@ -55,7 +65,7 @@ const updateDisplay = (question: string, answers: string[]) => {
 	answerBtnFour.innerText = randomisedAns[3];
 	questionTitle.innerText = `Question ${currentQuestion}`;
 	// reset modifications to buttons
-	ungreyAllButtons();
+	ungreyAllButtons(answerBtns, fiftyFiftyBtn);
 	// resetting defaults
 	message.style.display = "none";
 	nextBtn.style.display = "none";
@@ -70,7 +80,6 @@ const initialiseDisplay = (question1: string, answers1: string[]) => {
 	userScore = 0;
 	score.innerText = `Score: ${userScore}`;
 	currentQuestion = 1;
-	questionTitle.innerText = `Question ${currentQuestion}`;
 	nextBtn.innerText = "Next Question";
 	answerBtns.forEach((btn) => (btn.style.display = "initial"));
 	fiftyFiftyBtn.style.display = "initial";
@@ -94,18 +103,6 @@ const displayNextQuestion = () => {
 		default:
 			throw new Error("Question data could not be found.");
 	}
-};
-
-const randomiseAnsOrder = (answers: string[]): string[] => {
-	const newArray: string[] = [...answers];
-
-	for (let i: number = 0; i < answers.length; i++) {
-		// generate a random index value
-		let j: number = Math.ceil(Math.random() * 4) - 1;
-		// swap the value of the current index with the value of the random index
-		[newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-	}
-	return newArray;
 };
 
 const displayResult = () => {
@@ -133,7 +130,7 @@ const getResultMessage = (): string => {
 	}
 };
 
-const getCorrectAnswer = (): string => {
+export const getCorrectAnswer = (): string => {
 	switch (currentQuestion) {
 		case 1:
 			return questionData.answers1[0];
@@ -150,52 +147,6 @@ const getCorrectAnswer = (): string => {
 	}
 };
 
-const greyOutButton = (greyedBtn: HTMLButtonElement) => {
-	greyedBtn.style.backgroundColor = "#96a0af";
-	greyedBtn.style.border = "2px solid #636883";
-	greyedBtn.style.color = "#636883";
-};
-
-const ungreyAllButtons = () => {
-	answerBtns.forEach((btn) => {
-		ungreyAnsButton(btn);
-	});
-	ungreyHelpButton();
-};
-
-const ungreyAnsButton = (button: HTMLButtonElement) => {
-	button.style.color = "#363732ff";
-	button.style.backgroundColor = "#53d8fbff";
-	button.style.border = "2px solid #66c3ffff";
-};
-
-const ungreyHelpButton = () => {
-	fiftyFiftyBtn.style.backgroundColor = "#a1bbe6";
-	fiftyFiftyBtn.style.border = "2px solid #3770ca";
-	fiftyFiftyBtn.style.color = "#345995";
-};
-
-const correctAnswer = (button: HTMLButtonElement) => {
-	//change answer button to green
-	button.style.backgroundColor = "#7af0bf";
-	button.style.border = "2px solid #289683";
-	button.style.color = "#289683";
-	//update user score
-	userScore += 5;
-	score.innerText = `Score: ${userScore}`;
-	//display message
-	message.innerText = "Correct! Great job";
-};
-
-const incorrectAnswer = (button: HTMLButtonElement) => {
-	//change answer button to red
-	button.style.backgroundColor = "#f4acb7ff";
-	button.style.border = "2px solid #c7576f";
-	button.style.color = "#c7576f";
-	//display message
-	message.innerText = "Better luck next time";
-};
-
 const handleAnswerButtonClick = (event: Event) => {
 	const target = event.currentTarget as HTMLButtonElement;
 	//check if an answer button has already been clicked
@@ -207,9 +158,9 @@ const handleAnswerButtonClick = (event: Event) => {
 	answerBtns.forEach((button) => greyOutButton(button));
 	//check if answer for current question is correct
 	if (target.innerText === getCorrectAnswer()) {
-		correctAnswer(target);
+		correctAnswer(target, userScore, score, message);
 	} else {
-		incorrectAnswer(target);
+		incorrectAnswer(target, message);
 	}
 	// check if the current question is the last
 	if (currentQuestion === maxQuestion) {
@@ -233,97 +184,62 @@ const handleNextButtonClick = () => {
 	}
 };
 
-const removeAnswers = () => {
-	let removedAnswers = 0;
-	let firstRemovedIndex;
-	do {
-		let randomIndex = Math.ceil(Math.random() * 4) - 1;
-		if (
-			answerBtns[randomIndex].innerText !== getCorrectAnswer() &&
-			randomIndex !== firstRemovedIndex
-		) {
-			answerBtns[randomIndex].innerText = "";
-			removedAnswers++;
-			firstRemovedIndex = randomIndex;
-		}
-	} while (removedAnswers < 2);
-};
-
 const handleFiftyButtonClick = () => {
 	if (isAnsBtnClicked || isFiftyBtnClicked) {
 		return;
 	}
-	removeAnswers();
+	removeAnswers(answerBtns);
 	userScore -= 2;
 	score.innerText = `Score: ${userScore}`;
 	greyOutButton(fiftyFiftyBtn);
 	isFiftyBtnClicked = true;
 };
 
-const modifyBtnOnHover = (button: HTMLButtonElement) => {
-	button.style.color = "#67695f";
-	button.style.backgroundColor = "#7fdbf1";
-	button.style.border = "2px solid #7ccdfc";
-	button.style.cursor = "pointer";
-};
+answerBtns.forEach((button) => button.addEventListener("click", handleAnswerButtonClick));
+nextBtn.addEventListener("click", handleNextButtonClick);
+fiftyFiftyBtn.addEventListener("click", handleFiftyButtonClick);
 
-const modifyHelpBtnOnHover = (button: HTMLButtonElement) => {
-	button.style.color = "#5a7eb8";
-	button.style.backgroundColor = "#bccfec";
-	button.style.border = "2px solid #6aa7e0";
-	button.style.cursor = "pointer";
-};
+// when buttons are hovered over
+answerBtns.forEach((button) =>
+	button.addEventListener("mouseover", (event: Event) => {
+		const target = event.currentTarget as HTMLButtonElement;
+		if (isAnsBtnClicked || target.innerText === "") {
+			target.style.cursor = "default";
+			return;
+		}
+		modifyBtnOnHover(target);
+	})
+);
 
-const handleAnswerButtonMouseOn = (event: Event) => {
-	const target = event.currentTarget as HTMLButtonElement;
-	if (isAnsBtnClicked || target.innerText === "") {
-		target.style.cursor = "default";
-		return;
-	}
-	modifyBtnOnHover(target);
-};
+nextBtn.addEventListener("mouseover", () => modifyBtnOnHover(nextBtn));
 
-const handleNextButtonMouseOn = () => {
-	modifyBtnOnHover(nextBtn);
-};
-
-const handleFiftyButtonMouseOn = () => {
+fiftyFiftyBtn.addEventListener("mouseover", () => {
 	if (isAnsBtnClicked || isFiftyBtnClicked) {
 		fiftyFiftyBtn.style.cursor = "default";
 		return;
 	}
 	modifyHelpBtnOnHover(fiftyFiftyBtn);
-};
+});
 
-const handleAnswerButtonMouseOff = (event: Event) => {
-	const target = event.currentTarget as HTMLButtonElement;
-	if (isAnsBtnClicked || target.innerText === "") {
-		return;
-	}
-	ungreyAnsButton(target);
-};
+// when buttons are hovered off
+answerBtns.forEach((button) =>
+	button.addEventListener("mouseleave", (event: Event) => {
+		const target = event.currentTarget as HTMLButtonElement;
+		if (isAnsBtnClicked || target.innerText === "") {
+			return;
+		}
+		ungreyAnsButton(target);
+	})
+);
 
-const handleNextButtonMouseOff = () => {
-	ungreyAnsButton(nextBtn);
-};
+nextBtn.addEventListener("mouseleave", () => ungreyAnsButton(nextBtn));
 
-const handleFiftyButtonMouseOff = () => {
+fiftyFiftyBtn.addEventListener("mouseleave", () => {
 	if (isAnsBtnClicked || isFiftyBtnClicked) {
 		return;
 	}
-	ungreyHelpButton();
-};
+	ungreyHelpButton(fiftyFiftyBtn);
+});
 
+// begin quiz
 initialiseDisplay(questionData.question1, questionData.answers1);
-
-answerBtns.forEach((button) => button.addEventListener("click", handleAnswerButtonClick));
-nextBtn.addEventListener("click", handleNextButtonClick);
-fiftyFiftyBtn.addEventListener("click", handleFiftyButtonClick);
-
-answerBtns.forEach((button) => button.addEventListener("mouseover", handleAnswerButtonMouseOn));
-nextBtn.addEventListener("mouseover", handleNextButtonMouseOn);
-fiftyFiftyBtn.addEventListener("mouseover", handleFiftyButtonMouseOn);
-
-answerBtns.forEach((button) => button.addEventListener("mouseleave", handleAnswerButtonMouseOff));
-nextBtn.addEventListener("mouseleave", handleNextButtonMouseOff);
-fiftyFiftyBtn.addEventListener("mouseleave", handleFiftyButtonMouseOff);
