@@ -4,6 +4,7 @@ import {
 	greyOutButton,
 	modifyBtnOnHover,
 	modifyHelpBtnOnHover,
+	ungreyAllAnsButtons,
 	ungreyAllButtons,
 	ungreyAnsButton,
 	ungreyHelpButton,
@@ -13,12 +14,7 @@ import {
 	correctAnswer,
 	incorrectAnswer,
 } from "./Utilities/answerButtonUtilities";
-import { removeAnswers } from "./Utilities/helpButtonUtilities";
-
-// goal -> fix 50/50 function
-// the removed answers should not be able to be clicked on
-// 1. record the two removed answer indexes
-// conditional -> if removed answer is clicked, do nothing
+import { removeAnswers, generateAnsSuggestion } from "./Utilities/helpButtonUtilities";
 
 // flags
 let currentQuestion: number = 1; // to update and reset current question
@@ -26,6 +22,7 @@ let maxQuestion: number = 5; // to compare to current question
 let userScore: number = 0; // to update and reset user's score
 let isAnsBtnClicked: boolean = false; // to avoid multiple results of an answer being clicked
 let isFiftyBtnClicked: boolean = false;
+let isAskComBtnClicked: boolean = false;
 let removedAnswers: string[] = []; // records the removed answers to prevent them from being clicked on
 
 // capturing elements from the DOM
@@ -38,7 +35,10 @@ const answerBtnTwo = document.querySelector<HTMLButtonElement>("#answer-two");
 const answerBtnThree = document.querySelector<HTMLButtonElement>("#answer-three");
 const answerBtnFour = document.querySelector<HTMLButtonElement>("#answer-four");
 
+const helpBtns = document.querySelectorAll<HTMLButtonElement>(".help__btn");
 const fiftyFiftyBtn = document.querySelector<HTMLButtonElement>("#btnFiftyFifty");
+const askComBtn = document.querySelector<HTMLButtonElement>("#btnAskCom");
+
 const score = document.querySelector<HTMLDivElement>("#score");
 const message = document.querySelector<HTMLDivElement>("#message");
 const nextBtn = document.querySelector<HTMLButtonElement>("#nextBtn");
@@ -51,7 +51,9 @@ if (
 	!answerBtnTwo ||
 	!answerBtnThree ||
 	!answerBtnFour ||
+	!helpBtns ||
 	!fiftyFiftyBtn ||
+	!askComBtn ||
 	!score ||
 	!nextBtn ||
 	!message
@@ -70,19 +72,29 @@ const updateDisplay = (question: string, answers: string[]) => {
 	answerBtnThree.innerText = randomisedAns[2];
 	answerBtnFour.innerText = randomisedAns[3];
 	questionTitle.innerText = `Question ${currentQuestion}`;
-	// reset modifications to buttons
-	ungreyAllButtons(answerBtns, fiftyFiftyBtn);
+	// reset modifications to active buttons
+	ungreyAllAnsButtons(answerBtns);
+	if (!isFiftyBtnClicked) {
+		ungreyHelpButton(fiftyFiftyBtn);
+	}
+	if (!isAskComBtnClicked) {
+		ungreyHelpButton(askComBtn);
+	}
 	// resetting defaults
 	message.style.display = "none";
 	nextBtn.style.display = "none";
 	isAnsBtnClicked = false;
-	isFiftyBtnClicked = false;
 	removedAnswers = [];
 };
 
 // initialise display to show Question 1
 const initialiseDisplay = (question1: string, answers1: string[]) => {
 	updateDisplay(question1, answers1);
+	//all buttons should become active again
+	ungreyAllButtons(answerBtns, helpBtns);
+	isFiftyBtnClicked = false;
+	isAskComBtnClicked = false;
+	isAnsBtnClicked = false;
 	// reset defaults
 	userScore = 0;
 	score.innerText = `Score: ${userScore}`;
@@ -90,6 +102,7 @@ const initialiseDisplay = (question1: string, answers1: string[]) => {
 	nextBtn.innerText = "Next Question";
 	answerBtns.forEach((btn) => (btn.style.display = "initial"));
 	fiftyFiftyBtn.style.display = "initial";
+	askComBtn.style.display = "initial";
 	return;
 };
 
@@ -116,7 +129,7 @@ const displayResult = () => {
 	questionTitle.innerText = "Result";
 	answerBtns.forEach((btn) => (btn.style.display = "none"));
 	message.style.display = "none";
-	fiftyFiftyBtn.style.display = "none";
+	helpBtns.forEach((btn) => (btn.style.display = "none"));
 	nextBtn.innerText = "Play again";
 	questionText.innerText = getResultMessage();
 };
@@ -161,11 +174,14 @@ const handleAnswerButtonClick = (event: Event) => {
 		return;
 	}
 	//grey out buttons
-	greyOutButton(fiftyFiftyBtn);
+	helpBtns.forEach((button) => greyOutButton(button));
 	answerBtns.forEach((button) => greyOutButton(button));
 	//check if answer for current question is correct
 	if (target.innerText === getCorrectAnswer()) {
-		correctAnswer(target, userScore, score, message);
+		correctAnswer(target, message);
+		//update user score
+		userScore += 5;
+		score.innerText = `Score: ${userScore}`;
 	} else {
 		incorrectAnswer(target, message);
 	}
@@ -196,15 +212,23 @@ const handleFiftyButtonClick = () => {
 		return;
 	}
 	removeAnswers(answerBtns, removedAnswers);
-	userScore -= 2;
-	score.innerText = `Score: ${userScore}`;
 	greyOutButton(fiftyFiftyBtn);
 	isFiftyBtnClicked = true;
+};
+
+const handleAskComButtonClick = () => {
+	if (isAnsBtnClicked || isAskComBtnClicked) {
+		return;
+	}
+	generateAnsSuggestion(answerBtns, message);
+	greyOutButton(askComBtn);
+	isAskComBtnClicked = true;
 };
 
 answerBtns.forEach((button) => button.addEventListener("click", handleAnswerButtonClick));
 nextBtn.addEventListener("click", handleNextButtonClick);
 fiftyFiftyBtn.addEventListener("click", handleFiftyButtonClick);
+askComBtn.addEventListener("click", handleAskComButtonClick);
 
 // when buttons are hovered over
 answerBtns.forEach((button) =>
@@ -228,6 +252,14 @@ fiftyFiftyBtn.addEventListener("mouseover", () => {
 	modifyHelpBtnOnHover(fiftyFiftyBtn);
 });
 
+askComBtn.addEventListener("mouseover", () => {
+	if (isAnsBtnClicked || isAskComBtnClicked) {
+		askComBtn.style.cursor = "default";
+		return;
+	}
+	modifyHelpBtnOnHover(askComBtn);
+});
+
 // when buttons are hovered off
 answerBtns.forEach((button) =>
 	button.addEventListener("mouseleave", (event: Event) => {
@@ -246,6 +278,13 @@ fiftyFiftyBtn.addEventListener("mouseleave", () => {
 		return;
 	}
 	ungreyHelpButton(fiftyFiftyBtn);
+});
+
+askComBtn.addEventListener("mouseleave", () => {
+	if (isAnsBtnClicked || isAskComBtnClicked) {
+		return;
+	}
+	ungreyHelpButton(askComBtn);
 });
 
 // begin quiz

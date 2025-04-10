@@ -12,19 +12,11 @@ export const randomiseAnsOrder = (answers: string[]): string[] => {
 	return newArray;
 };
 
-export const correctAnswer = (
-	button: HTMLButtonElement,
-	userScore: number,
-	score: HTMLDivElement,
-	message: HTMLDivElement
-) => {
+export const correctAnswer = (button: HTMLButtonElement, message: HTMLDivElement) => {
 	//change answer button to green
 	button.style.backgroundColor = "#7af0bf";
 	button.style.border = "2px solid #289683";
 	button.style.color = "#289683";
-	//update user score
-	userScore += 5;
-	score.innerText = `Score: ${userScore}`;
 	//display message
 	message.innerText = "Correct! Great job";
 };

@@ -22,12 +22,16 @@ export const modifyHelpBtnOnHover = (button: HTMLButtonElement) => {
 
 export const ungreyAllButtons = (
 	ansBtns: NodeListOf<HTMLButtonElement>,
-	helpBtn: HTMLButtonElement
+	helpBtns: NodeListOf<HTMLButtonElement>
 ) => {
+	ungreyAllAnsButtons(ansBtns);
+	helpBtns.forEach((button) => ungreyHelpButton(button));
+};
+
+export const ungreyAllAnsButtons = (ansBtns: NodeListOf<HTMLButtonElement>) => {
 	ansBtns.forEach((btn) => {
 		ungreyAnsButton(btn);
 	});
-	ungreyHelpButton(helpBtn);
 };
 
 export const ungreyAnsButton = (button: HTMLButtonElement) => {

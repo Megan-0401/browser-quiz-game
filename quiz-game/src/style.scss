@@ -52,7 +52,7 @@ h1 {
 		@include btn-style();
 		color: palette.$text-col1;
 		border: 2px solid palette.$btn-border-col-1;
-		min-height: 55px;
+		min-height: 65px;
 	}
 }
 #allButtons {
@@ -61,14 +61,23 @@ h1 {
 	margin: 10px;
 	gap: 5vw;
 }
-#btnFiftyFifty {
-	@include btn-style();
-	border: 2px solid palette.$btn-border-col-2;
-	background-color: palette.$btn-col-2;
-	color: palette.$text-col2;
-	border-radius: 100%;
-	width: 85px;
-	height: 85px;
+.help {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	&__btn {
+		@include btn-style();
+		border: 2px solid palette.$btn-border-col-2;
+		background-color: palette.$btn-col-2;
+		color: palette.$text-col2;
+		border-radius: 100%;
+		width: 85px;
+		height: 85px;
+	}
+}
+#nextBtn {
+	@include btn-style-2();
+	border: 2px solid palette.$btn-border-col-1;
 }
 #score {
 	color: palette.$text-col3;
@@ -78,10 +87,6 @@ h1 {
 	display: none;
 	color: palette.$text-col3;
 	margin: 10px;
-}
-.btn {
-	@include btn-style-2();
-	border: 2px solid palette.$btn-border-col-1;
 }
 
 @include media-queries.desktop {
@@ -103,17 +108,19 @@ h1 {
 		grid-template-columns: 50% 50%;
 		gap: 15px;
 		&__btn {
-			font-size: typography.$lg-button-font-size;
+			font-size: typography.$lg-ans-button-font-size;
 			width: 18vw;
 		}
 	}
-	#btnFiftyFifty {
-		font-size: typography.$lg-button-font-size-2;
+	.help {
+		&__btn {
+			font-size: typography.$lg-button-font-size-2;
+		}
 	}
 	#message {
 		font-size: typography.$lg-message-font-size;
 	}
-	.btn {
+	#nextBtn {
 		font-size: typography.$lg-button-font-size;
 	}
 }
@@ -140,13 +147,15 @@ h1 {
 			width: 50vw;
 		}
 	}
-	#btnFiftyFifty {
-		font-size: typography.$s-button-font-size-2;
+	.help {
+		&__btn {
+			font-size: typography.$s-button-font-size-2;
+		}
 	}
 	#message {
 		font-size: typography.$s-message-font-size;
 	}
-	.btn {
+	#nextBtn {
 		font-size: typography.$s-button-font-size;
 	}
 }
