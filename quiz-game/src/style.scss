@@ -81,6 +81,7 @@ h1 {
 }
 .btn {
 	@include btn-style-2();
+	border: 2px solid palette.$btn-border-col-1;
 }
 
 @include media-queries.desktop {

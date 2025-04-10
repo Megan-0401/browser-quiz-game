@@ -1,8 +1,10 @@
 import "./style.scss";
 import * as questionData from "./question-data";
 
-// flags
+// goal -> streamline code into different files
+//
 
+// flags
 let currentQuestion: number = 1; // to update and reset current question
 let maxQuestion: number = 5; // to compare to current question
 let userScore: number = 0; // to update and reset user's score
@@ -53,7 +55,7 @@ const updateDisplay = (question: string, answers: string[]) => {
 	answerBtnFour.innerText = randomisedAns[3];
 	questionTitle.innerText = `Question ${currentQuestion}`;
 	// reset modifications to buttons
-	ungreyButton();
+	ungreyAllButtons();
 	// resetting defaults
 	message.style.display = "none";
 	nextBtn.style.display = "none";
@@ -154,15 +156,23 @@ const greyOutButton = (greyedBtn: HTMLButtonElement) => {
 	greyedBtn.style.color = "#636883";
 };
 
-const ungreyButton = () => {
+const ungreyAllButtons = () => {
+	answerBtns.forEach((btn) => {
+		ungreyAnsButton(btn);
+	});
+	ungreyHelpButton();
+};
+
+const ungreyAnsButton = (button: HTMLButtonElement) => {
+	button.style.color = "#363732ff";
+	button.style.backgroundColor = "#53d8fbff";
+	button.style.border = "2px solid #66c3ffff";
+};
+
+const ungreyHelpButton = () => {
 	fiftyFiftyBtn.style.backgroundColor = "#a1bbe6";
 	fiftyFiftyBtn.style.border = "2px solid #3770ca";
 	fiftyFiftyBtn.style.color = "#345995";
-	answerBtns.forEach((btn) => {
-		btn.style.color = "#363732ff";
-		btn.style.backgroundColor = "#53d8fbff";
-		btn.style.border = "2px solid #66c3ffff";
-	});
 };
 
 const correctAnswer = (button: HTMLButtonElement) => {
@@ -250,8 +260,70 @@ const handleFiftyButtonClick = () => {
 	isFiftyBtnClicked = true;
 };
 
+const modifyBtnOnHover = (button: HTMLButtonElement) => {
+	button.style.color = "#67695f";
+	button.style.backgroundColor = "#7fdbf1";
+	button.style.border = "2px solid #7ccdfc";
+	button.style.cursor = "pointer";
+};
+
+const modifyHelpBtnOnHover = (button: HTMLButtonElement) => {
+	button.style.color = "#5a7eb8";
+	button.style.backgroundColor = "#bccfec";
+	button.style.border = "2px solid #6aa7e0";
+	button.style.cursor = "pointer";
+};
+
+const handleAnswerButtonMouseOn = (event: Event) => {
+	const target = event.currentTarget as HTMLButtonElement;
+	if (isAnsBtnClicked || target.innerText === "") {
+		target.style.cursor = "default";
+		return;
+	}
+	modifyBtnOnHover(target);
+};
+
+const handleNextButtonMouseOn = () => {
+	modifyBtnOnHover(nextBtn);
+};
+
+const handleFiftyButtonMouseOn = () => {
+	if (isAnsBtnClicked || isFiftyBtnClicked) {
+		fiftyFiftyBtn.style.cursor = "default";
+		return;
+	}
+	modifyHelpBtnOnHover(fiftyFiftyBtn);
+};
+
+const handleAnswerButtonMouseOff = (event: Event) => {
+	const target = event.currentTarget as HTMLButtonElement;
+	if (isAnsBtnClicked || target.innerText === "") {
+		return;
+	}
+	ungreyAnsButton(target);
+};
+
+const handleNextButtonMouseOff = () => {
+	ungreyAnsButton(nextBtn);
+};
+
+const handleFiftyButtonMouseOff = () => {
+	if (isAnsBtnClicked || isFiftyBtnClicked) {
+		return;
+	}
+	ungreyHelpButton();
+};
+
 initialiseDisplay(questionData.question1, questionData.answers1);
 
 answerBtns.forEach((button) => button.addEventListener("click", handleAnswerButtonClick));
 nextBtn.addEventListener("click", handleNextButtonClick);
 fiftyFiftyBtn.addEventListener("click", handleFiftyButtonClick);
+
+answerBtns.forEach((button) => button.addEventListener("mouseover", handleAnswerButtonMouseOn));
+nextBtn.addEventListener("mouseover", handleNextButtonMouseOn);
+fiftyFiftyBtn.addEventListener("mouseover", handleFiftyButtonMouseOn);
+
+answerBtns.forEach((button) => button.addEventListener("mouseleave", handleAnswerButtonMouseOff));
+nextBtn.addEventListener("mouseleave", handleNextButtonMouseOff);
+fiftyFiftyBtn.addEventListener("mouseleave", handleFiftyButtonMouseOff);
