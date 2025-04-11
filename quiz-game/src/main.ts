@@ -18,7 +18,7 @@ import { removeAnswers, generateAnsSuggestion } from "./Utilities/helpButtonUtil
 
 // flags
 let currentQuestion: number = 1; // to update and reset current question
-let maxQuestion: number = 5; // to compare to current question
+let maxQuestion: number = 6; // to compare to current question
 let userScore: number = 0; // to update and reset user's score
 let isAnsBtnClicked: boolean = false; // to avoid multiple results of an answer being clicked
 let isFiftyBtnClicked: boolean = false;
@@ -63,7 +63,7 @@ if (
 
 // update display to current question
 const updateDisplay = (question: string, answers: string[]) => {
-	questionText.innerText = question;
+	questionText.innerHTML = question;
 	// randomise the order of the array
 	const randomisedAns: string[] = randomiseAnsOrder(answers);
 	// then assign each answer
@@ -120,6 +120,9 @@ const displayNextQuestion = () => {
 		case 5:
 			updateDisplay(questionData.question5, questionData.answers5);
 			break;
+		case 6:
+			updateDisplay(questionData.question6, questionData.answers6);
+			break;
 		default:
 			throw new Error("Question data could not be found.");
 	}
@@ -135,16 +138,15 @@ const displayResult = () => {
 };
 
 const getResultMessage = (): string => {
-	if (userScore === 25) {
-		return "Congrats! You answered all the questions correctly without any help.";
-	} else if (userScore <= 24 && userScore >= 20) {
+	// 4 outcomes -> all correct, half correct, some correct, none correct
+	let maxScore = maxQuestion * 5;
+	let halfMaxScore = (maxQuestion / 2) * 5;
+	if (userScore === maxScore) {
+		return "Congrats! You answered all the questions correctly.";
+	} else if (userScore < maxScore && userScore > halfMaxScore) {
 		return "Good job! You really know your stuff.";
-	} else if (userScore <= 19 && userScore >= 15) {
-		return "Nice! You have plenty good knowledge.";
-	} else if (userScore <= 14 && userScore >= 10) {
+	} else if (userScore <= halfMaxScore && userScore >= 5) {
 		return "Not bad. See if you can get a higher score next time.";
-	} else if (userScore <= 9 && userScore >= 5) {
-		return "You know a few things. Why don't you research a few topics and try again.";
 	} else {
 		return "Looks like you don't know a lot about these topics. No worries! Just try again.";
 	}
@@ -162,6 +164,8 @@ export const getCorrectAnswer = (): string => {
 			return questionData.answers4[0];
 		case 5:
 			return questionData.answers5[0];
+		case 6:
+			return questionData.answers6[0];
 		default:
 			throw new Error("Correct answer cannot be found.");
 	}

@@ -22,3 +22,7 @@ export const answers4: string[] = [
 export const question5: string =
 	"In the television series Peep Show, which series does the character Dobby first appear in?";
 export const answers5: string[] = ["Series 5", "Series 4", "Series 6", "Series 7"];
+
+export const question6: string =
+	"The track <i>On Melancholy Hill</i> by the band Gorillaz was featured in which album?";
+export const answers6: string[] = ["Plastic Beach", "Demon Days", "Humanz", "The Now Now"];

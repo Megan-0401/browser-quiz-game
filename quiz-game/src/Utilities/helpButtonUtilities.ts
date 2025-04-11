@@ -10,7 +10,7 @@ export const removeAnswers = (
 	let removedAnswers = 0;
 	let firstRemovedIndex;
 	do {
-		let randomIndex = Math.ceil(Math.random() * 4) - 1;
+		let randomIndex = getRandomValue(4);
 		if (
 			answerBtns[randomIndex].innerText !== getCorrectAnswer() &&
 			answerBtns[randomIndex].innerText !== comAnswer &&
@@ -32,7 +32,7 @@ export const generateAnsSuggestion = (
 	comAnswer = "";
 	// generate chance of correct answer being suggested
 	// 75% chance of correct ans, 25% chance of incorrect ans
-	if (Math.ceil(Math.random() * 4) - 1 === 3) {
+	if (getRandomValue(4) === 3) {
 		// give incorrect ans
 		const incorrectAns: string[] = [];
 		answerBtns.forEach((button) => {
@@ -41,11 +41,16 @@ export const generateAnsSuggestion = (
 			}
 		});
 		console.log(incorrectAns);
-		comAnswer = incorrectAns[Math.ceil(Math.random() * incorrectAns.length) - 1];
+		comAnswer = incorrectAns[getRandomValue(incorrectAns.length)];
 	} else {
 		//give correct ans
 		comAnswer = getCorrectAnswer();
 	}
 	message.innerText = `I think the answer is ${comAnswer}`;
 	message.style.display = "initial";
+};
+
+// generate a value between 0 and (maxValue - 1)
+const getRandomValue = (maxValue: number): number => {
+	return Math.ceil(Math.random() * maxValue) - 1;
 };
