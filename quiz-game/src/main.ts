@@ -1,5 +1,5 @@
 import "./style.scss";
-import * as questionData from "./questionData";
+import { Questions } from "./questionData";
 import {
 	greyOutButton,
 	modifyBtnOnHover,
@@ -18,7 +18,7 @@ import { removeAnswers, generateAnsSuggestion } from "./Utilities/helpButtonUtil
 
 // flags
 let currentQuestion: number = 1; // to update and reset current question
-let maxQuestion: number = 6; // to compare to current question
+let maxQuestion: number = Questions.length; // to compare to current question
 let userScore: number = 0; // to update and reset user's score
 let isAnsBtnClicked: boolean = false; // to avoid multiple results of an answer being clicked
 let isFiftyBtnClicked: boolean = false;
@@ -98,7 +98,7 @@ const initialiseDisplay = (question1: string, answers1: string[]) => {
 	// reset defaults
 	userScore = 0;
 	score.innerText = `Score: ${userScore}`;
-	currentQuestion = 1;
+	currentQuestion = Questions[0].questionId;
 	nextBtn.innerText = "Next Question";
 	answerBtns.forEach((btn) => (btn.style.display = "initial"));
 	fiftyFiftyBtn.style.display = "initial";
@@ -107,25 +107,9 @@ const initialiseDisplay = (question1: string, answers1: string[]) => {
 };
 
 const displayNextQuestion = () => {
-	switch (currentQuestion) {
-		case 2:
-			updateDisplay(questionData.question2, questionData.answers2);
-			break;
-		case 3:
-			updateDisplay(questionData.question3, questionData.answers3);
-			break;
-		case 4:
-			updateDisplay(questionData.question4, questionData.answers4);
-			break;
-		case 5:
-			updateDisplay(questionData.question5, questionData.answers5);
-			break;
-		case 6:
-			updateDisplay(questionData.question6, questionData.answers6);
-			break;
-		default:
-			throw new Error("Question data could not be found.");
-	}
+	const question: string = Questions[currentQuestion - 1].question;
+	const answers: string[] = Questions[currentQuestion - 1].answers;
+	updateDisplay(question, answers);
 };
 
 const displayResult = () => {
@@ -153,22 +137,7 @@ const getResultMessage = (): string => {
 };
 
 export const getCorrectAnswer = (): string => {
-	switch (currentQuestion) {
-		case 1:
-			return questionData.answers1[0];
-		case 2:
-			return questionData.answers2[0];
-		case 3:
-			return questionData.answers3[0];
-		case 4:
-			return questionData.answers4[0];
-		case 5:
-			return questionData.answers5[0];
-		case 6:
-			return questionData.answers6[0];
-		default:
-			throw new Error("Correct answer cannot be found.");
-	}
+	return Questions[currentQuestion - 1].answers[0];
 };
 
 const handleAnswerButtonClick = (event: Event) => {
@@ -207,7 +176,7 @@ const handleNextButtonClick = () => {
 	} else if (nextBtn.innerText === "Show results") {
 		displayResult();
 	} else {
-		initialiseDisplay(questionData.question1, questionData.answers1);
+		initialiseDisplay(Questions[0].question, Questions[0].answers);
 	}
 };
 
@@ -292,4 +261,4 @@ askComBtn.addEventListener("mouseleave", () => {
 });
 
 // begin quiz
-initialiseDisplay(questionData.question1, questionData.answers1);
+initialiseDisplay(Questions[0].question, Questions[0].answers);
