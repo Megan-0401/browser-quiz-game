@@ -1,22 +1,39 @@
 // changing colour modifications to buttons
 
+// button colours
+const ansBtnCol = "linear-gradient(#6a4c93, #e1a157)";
+const helpBtnCol = "linear-gradient(#5293b5, #6a4c93)";
+const textCol = "#363732ff";
+const borderStyle = "2px solid #e1a157";
+
+// hovered button colours
+const ansBtnHoverCol = "linear-gradient(#a77de1, #fff38b)";
+const helpBtnHoverCol = "linear-gradient(#85e0ff, #a77de1)";
+const textHoverCol = "#5d4755";
+const borderHoverStyle = "2px solid #fff38b";
+
+// greyed-out colours
+const greyedOut = "linear-gradient(#96a0af, #636883)";
+const greyedOutBorder = "2px solid #636883";
+const greyedOutText = "#636883";
+
 export const greyOutButton = (greyedBtn: HTMLButtonElement) => {
-	greyedBtn.style.backgroundColor = "#96a0af";
-	greyedBtn.style.border = "2px solid #636883";
-	greyedBtn.style.color = "#636883";
+	greyedBtn.style.background = greyedOut;
+	greyedBtn.style.border = greyedOutBorder;
+	greyedBtn.style.color = greyedOutText;
 };
 
 export const modifyBtnOnHover = (button: HTMLButtonElement) => {
-	button.style.color = "#67695f";
-	button.style.backgroundColor = "#7fdbf1";
-	button.style.border = "2px solid #7ccdfc";
+	button.style.color = textHoverCol;
+	button.style.background = ansBtnHoverCol;
+	button.style.border = borderHoverStyle;
 	button.style.cursor = "pointer";
 };
 
 export const modifyHelpBtnOnHover = (button: HTMLButtonElement) => {
-	button.style.color = "#5a7eb8";
-	button.style.backgroundColor = "#bccfec";
-	button.style.border = "2px solid #6aa7e0";
+	button.style.color = textHoverCol;
+	button.style.background = helpBtnHoverCol;
+	button.style.border = borderHoverStyle;
 	button.style.cursor = "pointer";
 };
 
@@ -35,13 +52,13 @@ export const ungreyAllAnsButtons = (ansBtns: NodeListOf<HTMLButtonElement>) => {
 };
 
 export const ungreyAnsButton = (button: HTMLButtonElement) => {
-	button.style.color = "#363732ff";
-	button.style.backgroundColor = "#53d8fbff";
-	button.style.border = "2px solid #66c3ffff";
+	button.style.color = textCol;
+	button.style.background = ansBtnCol;
+	button.style.border = borderStyle;
 };
 
 export const ungreyHelpButton = (button: HTMLButtonElement) => {
-	button.style.backgroundColor = "#a1bbe6";
-	button.style.border = "2px solid #3770ca";
-	button.style.color = "#345995";
+	button.style.color = textCol;
+	button.style.background = helpBtnCol;
+	button.style.border = borderStyle;
 };

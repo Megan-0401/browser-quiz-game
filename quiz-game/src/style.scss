@@ -2,31 +2,38 @@
 @use "palette";
 @use "typography";
 
-@mixin section-border {
+@mixin section-style {
+	border: 3px solid palette.$border-col;
 	border-radius: 1.5vw;
 	padding: 20px;
 }
 
 @mixin btn-style {
-	border-radius: 15px;
-	padding: 10px;
-	background-color: palette.$btn-col-1;
+	border: 2px solid palette.$border-col;
+	color: palette.$text-col2;
+	font-family: typography.$btn-font-family;
 }
 
-@mixin btn-style-2 {
+@mixin curved-btn {
+	border-radius: 15px;
+	padding: 10px;
+	background: palette.$ans-btn-col;
+}
+
+@mixin next-btn-style {
 	display: none;
 	@include btn-style();
-	color: palette.$text-col2;
+	@include curved-btn();
 	margin: 20px;
-	border: none;
 }
 
 body {
-	background-color: palette.$background-col;
+	background: palette.$background-col;
 }
 h1 {
 	color: palette.$text-col1;
-	@include section-border();
+	font-family: typography.$text-font-family;
+	@include section-style();
 }
 .whole-display {
 	display: flex;
@@ -38,20 +45,20 @@ h1 {
 	flex-direction: column;
 	align-items: center;
 	gap: 50px;
-	@include section-border();
+	@include section-style();
 	&--col {
 		background-color: palette.$div-col;
 	}
 }
 .question {
-	color: palette.$text-col2;
+	color: palette.$text-col1;
+	font-family: typography.$text-font-family;
 	text-align: center;
 }
 .answers {
 	&__btn {
 		@include btn-style();
-		color: palette.$text-col1;
-		border: 2px solid palette.$btn-border-col-1;
+		@include curved-btn();
 		min-height: 65px;
 	}
 }
@@ -67,25 +74,30 @@ h1 {
 	gap: 20px;
 	&__btn {
 		@include btn-style();
-		border: 2px solid palette.$btn-border-col-2;
-		background-color: palette.$btn-col-2;
-		color: palette.$text-col2;
+		background: palette.$help-btn-col;
 		border-radius: 100%;
 		width: 85px;
 		height: 85px;
 	}
 }
 #nextBtn {
-	@include btn-style-2();
-	border: 2px solid palette.$btn-border-col-1;
+	@include next-btn-style();
 }
 #score {
-	color: palette.$text-col3;
+	color: palette.$text-col1;
+	background: palette.$score-col;
+	border: 2px solid palette.$border-col;
+	font-family: typography.$btn-font-family;
+	border-radius: 1.5vw;
 	font-size: typography.$score-font-size;
+	padding: 20px;
+	min-width: 7.5vw;
+	text-align: center;
 }
 #message {
 	display: none;
-	color: palette.$text-col3;
+	color: palette.$text-col1;
+	font-family: typography.$text-font-family;
 	margin: 10px;
 }
 

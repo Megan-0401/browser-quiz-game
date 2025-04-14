@@ -9,6 +9,7 @@ export const removeAnswers = (
 ) => {
 	let removedAnswers = 0;
 	let firstRemovedIndex;
+	randomAnsIndex = [];
 	do {
 		let randomIndex = getRandomValue(4);
 		if (

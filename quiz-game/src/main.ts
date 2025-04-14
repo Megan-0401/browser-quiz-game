@@ -63,6 +63,7 @@ if (
 
 // update display to current question
 const updateDisplay = (question: string, answers: string[]) => {
+	questionTitle.innerText = `Question ${currentQuestion}`;
 	questionText.innerHTML = question;
 	// randomise the order of the array
 	const randomisedAns: string[] = randomiseAnsOrder(answers);
@@ -71,7 +72,6 @@ const updateDisplay = (question: string, answers: string[]) => {
 	answerBtnTwo.innerText = randomisedAns[1];
 	answerBtnThree.innerText = randomisedAns[2];
 	answerBtnFour.innerText = randomisedAns[3];
-	questionTitle.innerText = `Question ${currentQuestion}`;
 	// reset modifications to active buttons
 	ungreyAllAnsButtons(answerBtns);
 	if (!isFiftyBtnClicked) {
@@ -84,25 +84,22 @@ const updateDisplay = (question: string, answers: string[]) => {
 	message.style.display = "none";
 	nextBtn.style.display = "none";
 	isAnsBtnClicked = false;
-	removedAnswers = [];
 };
 
 // initialise display to show Question 1
 const initialiseDisplay = (question1: string, answers1: string[]) => {
+	currentQuestion = Questions[0].questionId;
 	updateDisplay(question1, answers1);
 	//all buttons should become active again
 	ungreyAllButtons(answerBtns, helpBtns);
 	isFiftyBtnClicked = false;
 	isAskComBtnClicked = false;
-	isAnsBtnClicked = false;
 	// reset defaults
 	userScore = 0;
 	score.innerText = `Score: ${userScore}`;
-	currentQuestion = Questions[0].questionId;
 	nextBtn.innerText = "Next Question";
 	answerBtns.forEach((btn) => (btn.style.display = "initial"));
-	fiftyFiftyBtn.style.display = "initial";
-	askComBtn.style.display = "initial";
+	helpBtns.forEach((btn) => (btn.style.display = "initial"));
 	return;
 };
 

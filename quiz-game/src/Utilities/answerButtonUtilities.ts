@@ -14,18 +14,18 @@ export const randomiseAnsOrder = (answers: string[]): string[] => {
 
 export const correctAnswer = (button: HTMLButtonElement, message: HTMLDivElement) => {
 	//change answer button to green
-	button.style.backgroundColor = "#7af0bf";
+	button.style.background = "linear-gradient(#7af0bf, #289683)";
 	button.style.border = "2px solid #289683";
-	button.style.color = "#289683";
+	button.style.color = "#136b5c";
 	//display message
 	message.innerText = "Correct! Great job";
 };
 
 export const incorrectAnswer = (button: HTMLButtonElement, message: HTMLDivElement) => {
 	//change answer button to red
-	button.style.backgroundColor = "#f4acb7ff";
+	button.style.background = "linear-gradient(#f4acb7ff, #c7576f)";
 	button.style.border = "2px solid #c7576f";
-	button.style.color = "#c7576f";
+	button.style.color = "#9b364c";
 	//display message
 	message.innerText = "Better luck next time";
 };

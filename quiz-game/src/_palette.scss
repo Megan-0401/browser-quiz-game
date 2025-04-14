@@ -1,19 +1,22 @@
 //background colour
-$background-col: #363732ff;
+$background-col: linear-gradient(to right, #5654a9, #380f58);
 
-//div colours
-$div-col: #dce1e9ff;
+//div colour
+$div-col: #34252f;
+
+//border colour
+$border-col: #e1a157;
+$border-col-2: #6a4c93;
 
 // button colours
-$btn-col-1: #53d8fbff;
-$btn-border-col-1: #66c3ffff;
-$btn-col-2: #a1bbe6;
-$btn-border-col-2: #3770ca;
-$btn-correct-ans-col: #7af0bf;
-$btn-incorrect-ans-col: #f4acb7ff;
-$btn-next-col: #dce1e9ff;
+$ans-btn-col: linear-gradient(#6a4c93, #e1a157);
+$help-btn-col: linear-gradient(#5293b5, #6a4c93);
+$correct-ans-col: #7af0bf;
+$incorrect-ans-col: #f4acb7ff;
+
+//score colour
+$score-col: linear-gradient(#6a4c93, #380f58);
 
 // text colours
-$text-col1: #363732ff;
-$text-col2: #345995;
-$text-col3: #9d6381;
+$text-col1: #e1a157;
+$text-col2: #363732ff;
