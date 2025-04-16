@@ -17,7 +17,7 @@
 @mixin curved-btn {
 	border-radius: 15px;
 	padding: 10px;
-	background: palette.$ans-btn-col;
+	background-image: palette.$ans-btn-col;
 }
 
 @mixin next-btn-style {
@@ -27,18 +27,46 @@
 	margin: 20px;
 }
 
-body {
-	background: palette.$background-col;
-}
-h1 {
+@mixin text-style {
 	color: palette.$text-col1;
 	font-family: typography.$text-font-family;
-	@include section-style();
+}
+
+body {
+	background-image: palette.$background-col;
+}
+h1 {
+	@include text-style();
+}
+p {
+	@include text-style();
+	text-align: center;
 }
 .whole-display {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+}
+#menuScreen {
+	display: none;
+	align-items: center;
+	flex-direction: column;
+	@include section-style();
+}
+#lifelineInstructions {
+	display: flex;
+	justify-content: space-around;
+}
+.instructionContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 20px 50px;
+}
+#startBtn {
+	@include btn-style();
+	@include curved-btn();
+	font-size: typography.$lg-button-font-size;
 }
 .section {
 	display: flex;
@@ -50,9 +78,11 @@ h1 {
 		background-color: palette.$div-col;
 	}
 }
+#questionTitle {
+	@include section-style();
+}
 .question {
-	color: palette.$text-col1;
-	font-family: typography.$text-font-family;
+	@include text-style();
 	text-align: center;
 }
 .answers {
@@ -74,7 +104,7 @@ h1 {
 	gap: 20px;
 	&__btn {
 		@include btn-style();
-		background: palette.$help-btn-col;
+		background-image: palette.$help-btn-col;
 		border-radius: 100%;
 		width: 85px;
 		height: 85px;
@@ -85,7 +115,7 @@ h1 {
 }
 #score {
 	color: palette.$text-col1;
-	background: palette.$score-col;
+	background-image: palette.$score-col;
 	border: 2px solid palette.$border-col;
 	font-family: typography.$btn-font-family;
 	border-radius: 1.5vw;
@@ -106,8 +136,16 @@ h1 {
 		margin: auto;
 		width: 55vw;
 	}
+	#menuScreen {
+		margin: auto;
+		margin-top: 65px;
+		width: 75vw;
+	}
 	h1 {
 		font-size: typography.$lg-header-font-size;
+	}
+	p {
+		font-size: typography.$lg-button-font-size;
 	}
 	.section {
 		width: 50vw;
@@ -141,8 +179,14 @@ h1 {
 	.whole-display {
 		margin: 5vw;
 	}
+	#menuScreen {
+		margin: 5vw;
+	}
 	h1 {
 		font-size: typography.$s-header-font-size;
+	}
+	p {
+		font-size: typography.$s-button-font-size-2;
 	}
 	.section {
 		width: 65vw;

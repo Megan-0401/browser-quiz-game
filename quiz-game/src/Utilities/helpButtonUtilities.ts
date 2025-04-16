@@ -1,4 +1,5 @@
 import { getCorrectAnswer } from "../main";
+import { greyOutButton } from "./buttonDisplay";
 
 let comAnswer: string = "";
 
@@ -6,9 +7,10 @@ let comAnswer: string = "";
 export const removeAnswers = (
 	answerBtns: NodeListOf<HTMLButtonElement>,
 	randomAnsIndex: string[]
-) => {
+): string[] => {
 	let removedAnswers = 0;
 	let firstRemovedIndex;
+	// clear array from previous game
 	randomAnsIndex = [];
 	do {
 		let randomIndex = getRandomValue(4);
@@ -21,8 +23,10 @@ export const removeAnswers = (
 			removedAnswers++;
 			firstRemovedIndex = randomIndex;
 			randomAnsIndex.push(answerBtns[randomIndex].innerText);
+			greyOutButton(answerBtns[randomIndex]);
 		}
 	} while (removedAnswers < 2);
+	return randomAnsIndex;
 };
 
 // ask COM

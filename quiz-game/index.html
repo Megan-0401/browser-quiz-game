@@ -9,6 +9,34 @@
 	<body>
 		<script type="module" src="/src/main.ts"></script>
 
+		<div id="menuScreen" class="section--col">
+			<h1>Welcome to the Quiz!</h1>
+			<div>
+				<p>Test how much you know in this general knowledge quiz.</p>
+				<p>If you get stuck, there are some lifelines to help you out:</p>
+			</div>
+			<div id="lifelineInstructions">
+				<div class="instructionContainer">
+					<button class="help__btn">50/50</button>
+					<p>
+						Two incorrect answers will be removed, giving you a 50/50 chance to choose
+						the correct answer.
+					</p>
+				</div>
+				<div class="instructionContainer">
+					<button class="help__btn">Ask COM</button>
+					<p>
+						The computer will suggest the correct answer to you. Use wisely - it's not
+						always right!
+					</p>
+				</div>
+			</div>
+			<div>
+				<p>(Each lifeline can only be used once per game)</p>
+				<p>Good luck!</p>
+			</div>
+			<button id="startBtn">Start Quiz</button>
+		</div>
 		<section class="whole-display">
 			<h1 id="questionTitle" class="section--col">Question 1</h1>
 			<div class="section section--col">

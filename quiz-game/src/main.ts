@@ -23,7 +23,7 @@ let userScore: number = 0; // to update and reset user's score
 let isAnsBtnClicked: boolean = false; // to avoid multiple results of an answer being clicked
 let isFiftyBtnClicked: boolean = false;
 let isAskComBtnClicked: boolean = false;
-let removedAnswers: string[] = []; // records the removed answers to prevent them from being clicked on
+export let removedAnswers: string[] = []; // records the removed answers to prevent them from being clicked on
 
 // capturing elements from the DOM
 const questionTitle = document.querySelector<HTMLHeadingElement>("#questionTitle");
@@ -43,6 +43,10 @@ const score = document.querySelector<HTMLDivElement>("#score");
 const message = document.querySelector<HTMLDivElement>("#message");
 const nextBtn = document.querySelector<HTMLButtonElement>("#nextBtn");
 
+const menuScreen = document.querySelector<HTMLDivElement>("#menuScreen");
+const startBtn = document.querySelector<HTMLButtonElement>("#startBtn");
+const quizDisplay = document.querySelector<HTMLElement>(".whole-display");
+
 if (
 	!questionTitle ||
 	!questionText ||
@@ -56,7 +60,10 @@ if (
 	!askComBtn ||
 	!score ||
 	!nextBtn ||
-	!message
+	!message ||
+	!menuScreen ||
+	!startBtn ||
+	!quizDisplay
 ) {
 	throw new Error("Some elements cannot be found.");
 }
@@ -88,6 +95,8 @@ const updateDisplay = (question: string, answers: string[]) => {
 
 // initialise display to show Question 1
 const initialiseDisplay = (question1: string, answers1: string[]) => {
+	menuScreen.style.display = "none";
+	quizDisplay.style.display = "flex";
 	currentQuestion = Questions[0].questionId;
 	updateDisplay(question1, answers1);
 	//all buttons should become active again
@@ -101,6 +110,11 @@ const initialiseDisplay = (question1: string, answers1: string[]) => {
 	answerBtns.forEach((btn) => (btn.style.display = "initial"));
 	helpBtns.forEach((btn) => (btn.style.display = "initial"));
 	return;
+};
+
+const displayMenu = () => {
+	menuScreen.style.display = "flex";
+	quizDisplay.style.display = "none";
 };
 
 const displayNextQuestion = () => {
@@ -135,6 +149,10 @@ const getResultMessage = (): string => {
 
 export const getCorrectAnswer = (): string => {
 	return Questions[currentQuestion - 1].answers[0];
+};
+
+const handleStartButtonClick = () => {
+	initialiseDisplay(Questions[0].question, Questions[0].answers);
 };
 
 const handleAnswerButtonClick = (event: Event) => {
@@ -181,7 +199,8 @@ const handleFiftyButtonClick = () => {
 	if (isAnsBtnClicked || isFiftyBtnClicked) {
 		return;
 	}
-	removeAnswers(answerBtns, removedAnswers);
+	// remove answers from grid AND update removedAnswers array
+	removedAnswers = removeAnswers(answerBtns, removedAnswers);
 	greyOutButton(fiftyFiftyBtn);
 	isFiftyBtnClicked = true;
 };
@@ -195,6 +214,7 @@ const handleAskComButtonClick = () => {
 	isAskComBtnClicked = true;
 };
 
+startBtn.addEventListener("click", handleStartButtonClick);
 answerBtns.forEach((button) => button.addEventListener("click", handleAnswerButtonClick));
 nextBtn.addEventListener("click", handleNextButtonClick);
 fiftyFiftyBtn.addEventListener("click", handleFiftyButtonClick);
@@ -212,6 +232,7 @@ answerBtns.forEach((button) =>
 	})
 );
 
+startBtn.addEventListener("mouseover", () => modifyBtnOnHover(startBtn));
 nextBtn.addEventListener("mouseover", () => modifyBtnOnHover(nextBtn));
 
 fiftyFiftyBtn.addEventListener("mouseover", () => {
@@ -241,6 +262,7 @@ answerBtns.forEach((button) =>
 	})
 );
 
+startBtn.addEventListener("mouseleave", () => ungreyAnsButton(startBtn));
 nextBtn.addEventListener("mouseleave", () => ungreyAnsButton(nextBtn));
 
 fiftyFiftyBtn.addEventListener("mouseleave", () => {
@@ -258,4 +280,5 @@ askComBtn.addEventListener("mouseleave", () => {
 });
 
 // begin quiz
-initialiseDisplay(Questions[0].question, Questions[0].answers);
+displayMenu();
+//initialiseDisplay(Questions[0].question, Questions[0].answers);

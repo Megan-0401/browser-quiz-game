@@ -17,6 +17,11 @@ Once all the questions are answered, the player will be shown their total score 
 
 ### HTML
 
+-   Menu screen => 1 div
+    -   Title (`Welcome to the quiz!`)
+    -   Instructions => para
+    -   Copy of non-interactable lifeline buttons (for display purposes)
+    -   `Start quiz` => 1 button
 -   Question title (e.g. `Question 1`)
 -   Question section => 1 div (flex display)
     -   Question => 1 div
@@ -44,7 +49,10 @@ Once all the questions are answered, the player will be shown their total score 
 
 ### TypeScript
 
--   When the page loads, the question div should update to display the first question
+-   When the page loads, the menu should display
+-   When the user clicks the `Start quiz` button:
+    -   The menu will hide and the questions section will display
+    -   The question div should update to display the first question
 -   Event listeners that watch for button clicks
     -   When an answer button is clicked, it will check if the answer is correct
     -   If correct:
@@ -83,13 +91,3 @@ Once all the questions are answered, the player will be shown their total score 
 -   If the user uses the `50/50` button and `Ask COM` button on the same question:
     -   `50/50` then `Ask COM` -> The computer will only choose between the two answers present
     -   `Ask COM` then `50/50` -> If the computer suggested an incorrect answer, then the two other incorrect answers will be removed, leaving the correct answer and the suggested incorrect answer
-
-## Extra
-
-### Hint button
-
-Possibility of a hint button:
-
--   Displays on the left side of the question div
--   If clicked, it will display a small hint
--   If correct answers increase score by 5, then using a hint will decrease score by 2

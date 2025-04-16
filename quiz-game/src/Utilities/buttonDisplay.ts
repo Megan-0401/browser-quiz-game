@@ -18,21 +18,21 @@ const greyedOutBorder = "2px solid #636883";
 const greyedOutText = "#636883";
 
 export const greyOutButton = (greyedBtn: HTMLButtonElement) => {
-	greyedBtn.style.background = greyedOut;
+	greyedBtn.style.backgroundImage = greyedOut;
 	greyedBtn.style.border = greyedOutBorder;
 	greyedBtn.style.color = greyedOutText;
 };
 
 export const modifyBtnOnHover = (button: HTMLButtonElement) => {
 	button.style.color = textHoverCol;
-	button.style.background = ansBtnHoverCol;
+	button.style.backgroundImage = ansBtnHoverCol;
 	button.style.border = borderHoverStyle;
 	button.style.cursor = "pointer";
 };
 
 export const modifyHelpBtnOnHover = (button: HTMLButtonElement) => {
 	button.style.color = textHoverCol;
-	button.style.background = helpBtnHoverCol;
+	button.style.backgroundImage = helpBtnHoverCol;
 	button.style.border = borderHoverStyle;
 	button.style.cursor = "pointer";
 };
@@ -53,12 +53,12 @@ export const ungreyAllAnsButtons = (ansBtns: NodeListOf<HTMLButtonElement>) => {
 
 export const ungreyAnsButton = (button: HTMLButtonElement) => {
 	button.style.color = textCol;
-	button.style.background = ansBtnCol;
+	button.style.backgroundImage = ansBtnCol;
 	button.style.border = borderStyle;
 };
 
 export const ungreyHelpButton = (button: HTMLButtonElement) => {
 	button.style.color = textCol;
-	button.style.background = helpBtnCol;
+	button.style.backgroundImage = helpBtnCol;
 	button.style.border = borderStyle;
 };
