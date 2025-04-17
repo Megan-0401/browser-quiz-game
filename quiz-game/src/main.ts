@@ -31,10 +31,6 @@ const questionTitle = document.querySelector<HTMLHeadingElement>("#questionTitle
 const questionText = document.querySelector<HTMLDivElement>(".question");
 
 const answerBtns = document.querySelectorAll<HTMLButtonElement>(".answers__btn");
-const answerBtnOne = document.querySelector<HTMLButtonElement>("#answer-one");
-const answerBtnTwo = document.querySelector<HTMLButtonElement>("#answer-two");
-const answerBtnThree = document.querySelector<HTMLButtonElement>("#answer-three");
-const answerBtnFour = document.querySelector<HTMLButtonElement>("#answer-four");
 
 const helpBtns = document.querySelectorAll<HTMLButtonElement>(".help__btn");
 const fiftyFiftyBtn = document.querySelector<HTMLButtonElement>("#btnFiftyFifty");
@@ -56,10 +52,6 @@ if (
 	!questionTitle ||
 	!questionText ||
 	!answerBtns ||
-	!answerBtnOne ||
-	!answerBtnTwo ||
-	!answerBtnThree ||
-	!answerBtnFour ||
 	!helpBtns ||
 	!fiftyFiftyBtn ||
 	!askComBtn ||
@@ -83,10 +75,10 @@ const updateDisplay = (question: string, answers: string[]) => {
 	// randomise the order of the array
 	const randomisedAns: string[] = randomiseAnsOrder(answers);
 	// then assign each answer
-	answerBtnOne.innerText = randomisedAns[0];
-	answerBtnTwo.innerText = randomisedAns[1];
-	answerBtnThree.innerText = randomisedAns[2];
-	answerBtnFour.innerText = randomisedAns[3];
+	answerBtns[0].innerText = randomisedAns[0];
+	answerBtns[1].innerText = randomisedAns[1];
+	answerBtns[2].innerText = randomisedAns[2];
+	answerBtns[3].innerText = randomisedAns[3];
 	// reset modifications to active buttons
 	ungreyAllAnsButtons(answerBtns);
 	if (!isFiftyBtnClicked) {
@@ -264,7 +256,6 @@ answerBtns.forEach((button) =>
 	})
 );
 
-startBtn.addEventListener("mouseover", () => modifyBtnOnHover(startBtn));
 nextBtn.addEventListener("mouseover", () => modifyBtnOnHover(nextBtn));
 
 fiftyFiftyBtn.addEventListener("mouseover", () => {
@@ -294,7 +285,6 @@ answerBtns.forEach((button) =>
 	})
 );
 
-startBtn.addEventListener("mouseleave", () => ungreyAnsButton(startBtn));
 nextBtn.addEventListener("mouseleave", () => ungreyAnsButton(nextBtn));
 
 fiftyFiftyBtn.addEventListener("mouseleave", () => {
@@ -313,4 +303,3 @@ askComBtn.addEventListener("mouseleave", () => {
 
 // begin quiz
 displayMenu();
-//initialiseDisplay(Questions[0].question, Questions[0].answers);

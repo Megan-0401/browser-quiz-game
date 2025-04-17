@@ -27,6 +27,12 @@
 	margin: 20px;
 }
 
+@mixin btn-hover-style {
+	cursor: pointer;
+	color: palette.$text-hover-col;
+	border: 2px solid palette.$border-hover-col;
+}
+
 @mixin text-style {
 	color: palette.$text-col1;
 	font-family: typography.$text-font-family;
@@ -67,6 +73,10 @@ p {
 	@include btn-style();
 	@include curved-btn();
 	font-size: typography.$lg-button-font-size;
+}
+#startBtn:hover {
+	@include btn-hover-style();
+	background-image: palette.$ans-hover-col;
 }
 .section {
 	display: flex;
@@ -140,10 +150,8 @@ p {
 	right: 20px;
 }
 #muteMusic:hover {
-	cursor: pointer;
-	color: #5d4755;
-	background-image: linear-gradient(#85e0ff, #a77de1);
-	border: 2px solid #fff38b;
+	@include btn-hover-style();
+	background-image: palette.$help-hover-col;
 }
 
 @include media-queries.desktop {
