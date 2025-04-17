@@ -136,6 +136,8 @@ p {
 	width: 50px;
 	height: 50px;
 	background-image: palette.$help-btn-col;
+	position: fixed;
+	right: 20px;
 }
 #muteMusic:hover {
 	cursor: pointer;
@@ -187,9 +189,7 @@ p {
 		font-size: typography.$lg-button-font-size;
 	}
 	#muteMusic {
-		position: fixed;
 		bottom: 20px;
-		right: 20px;
 	}
 }
 
@@ -231,5 +231,8 @@ p {
 	}
 	#nextBtn {
 		font-size: typography.$s-button-font-size;
+	}
+	#muteMusic {
+		top: 20px;
 	}
 }

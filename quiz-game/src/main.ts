@@ -16,12 +16,6 @@ import {
 } from "./Utilities/answerButtonUtilities";
 import { removeAnswers, generateAnsSuggestion } from "./Utilities/helpButtonUtilities";
 
-//GOALS//
-// Add music
-// Add mute audio button
-// Add more questions
-// Streamline code
-
 // flags
 let currentQuestion: number = 1; // to update and reset current question
 let maxQuestion: number = Questions.length; // to compare to current question
