@@ -16,6 +16,12 @@ import {
 } from "./Utilities/answerButtonUtilities";
 import { removeAnswers, generateAnsSuggestion } from "./Utilities/helpButtonUtilities";
 
+//GOALS//
+// Add music
+// Add mute audio button
+// Add more questions
+// Streamline code
+
 // flags
 let currentQuestion: number = 1; // to update and reset current question
 let maxQuestion: number = Questions.length; // to compare to current question
@@ -23,6 +29,7 @@ let userScore: number = 0; // to update and reset user's score
 let isAnsBtnClicked: boolean = false; // to avoid multiple results of an answer being clicked
 let isFiftyBtnClicked: boolean = false;
 let isAskComBtnClicked: boolean = false;
+let isMusicMuted: boolean = false;
 export let removedAnswers: string[] = []; // records the removed answers to prevent them from being clicked on
 
 // capturing elements from the DOM
@@ -47,6 +54,10 @@ const menuScreen = document.querySelector<HTMLDivElement>("#menuScreen");
 const startBtn = document.querySelector<HTMLButtonElement>("#startBtn");
 const quizDisplay = document.querySelector<HTMLElement>(".whole-display");
 
+const soundEffect = document.querySelector<HTMLAudioElement>("#soundEffect");
+const bgMusic = document.querySelector<HTMLAudioElement>("#music");
+const muteMusicBtn = document.querySelector<HTMLButtonElement>("#muteMusic");
+
 if (
 	!questionTitle ||
 	!questionText ||
@@ -63,7 +74,10 @@ if (
 	!message ||
 	!menuScreen ||
 	!startBtn ||
-	!quizDisplay
+	!quizDisplay ||
+	!soundEffect ||
+	!bgMusic ||
+	!muteMusicBtn
 ) {
 	throw new Error("Some elements cannot be found.");
 }
@@ -115,6 +129,17 @@ const initialiseDisplay = (question1: string, answers1: string[]) => {
 const displayMenu = () => {
 	menuScreen.style.display = "flex";
 	quizDisplay.style.display = "none";
+	playMusic();
+};
+
+const playMusic = () => {
+	bgMusic.play();
+	bgMusic.volume = 0.1;
+	bgMusic.loop = true;
+};
+
+const muteMusic = () => {
+	bgMusic.pause();
 };
 
 const displayNextQuestion = () => {
@@ -166,12 +191,12 @@ const handleAnswerButtonClick = (event: Event) => {
 	answerBtns.forEach((button) => greyOutButton(button));
 	//check if answer for current question is correct
 	if (target.innerText === getCorrectAnswer()) {
-		correctAnswer(target, message);
+		correctAnswer(target, message, soundEffect);
 		//update user score
 		userScore += 5;
 		score.innerText = `Score: ${userScore}`;
 	} else {
-		incorrectAnswer(target, message);
+		incorrectAnswer(target, message, soundEffect);
 	}
 	// check if the current question is the last
 	if (currentQuestion === maxQuestion) {
@@ -214,11 +239,24 @@ const handleAskComButtonClick = () => {
 	isAskComBtnClicked = true;
 };
 
+const handleMusicButtonClick = () => {
+	if (isMusicMuted) {
+		playMusic();
+		muteMusicBtn.innerHTML = `<i class="material-icons">volume_up</i>`;
+		isMusicMuted = false;
+	} else {
+		muteMusic();
+		muteMusicBtn.innerHTML = `<i class="material-icons">volume_off</i>`;
+		isMusicMuted = true;
+	}
+};
+
 startBtn.addEventListener("click", handleStartButtonClick);
 answerBtns.forEach((button) => button.addEventListener("click", handleAnswerButtonClick));
 nextBtn.addEventListener("click", handleNextButtonClick);
 fiftyFiftyBtn.addEventListener("click", handleFiftyButtonClick);
 askComBtn.addEventListener("click", handleAskComButtonClick);
+muteMusicBtn.addEventListener("click", handleMusicButtonClick);
 
 // when buttons are hovered over
 answerBtns.forEach((button) =>

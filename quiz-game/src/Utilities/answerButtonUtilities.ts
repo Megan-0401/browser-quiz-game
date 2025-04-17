@@ -12,20 +12,34 @@ export const randomiseAnsOrder = (answers: string[]): string[] => {
 	return newArray;
 };
 
-export const correctAnswer = (button: HTMLButtonElement, message: HTMLDivElement) => {
-	//change answer button to green
+export const correctAnswer = (
+	button: HTMLButtonElement,
+	message: HTMLDivElement,
+	audio: HTMLAudioElement
+) => {
 	button.style.background = "linear-gradient(#7af0bf, #289683)";
 	button.style.border = "2px solid #289683";
 	button.style.color = "#136b5c";
-	//display message
 	message.innerText = "Correct! Great job";
+	let audioSrc = "audio/correct.mp3";
+	playSound(audio, audioSrc);
 };
 
-export const incorrectAnswer = (button: HTMLButtonElement, message: HTMLDivElement) => {
-	//change answer button to red
+export const incorrectAnswer = (
+	button: HTMLButtonElement,
+	message: HTMLDivElement,
+	audio: HTMLAudioElement
+) => {
 	button.style.background = "linear-gradient(#f4acb7ff, #c7576f)";
 	button.style.border = "2px solid #c7576f";
 	button.style.color = "#9b364c";
-	//display message
 	message.innerText = "Better luck next time";
+	let audioSrc = "audio/incorrect.mp3";
+	playSound(audio, audioSrc);
+};
+
+const playSound = async (audio: HTMLAudioElement, audioSrc: string) => {
+	audio.src = await audioSrc;
+	audio.volume = 0.5;
+	await audio.play();
 };

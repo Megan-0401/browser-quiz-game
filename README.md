@@ -91,3 +91,11 @@ Once all the questions are answered, the player will be shown their total score 
 -   If the user uses the `50/50` button and `Ask COM` button on the same question:
     -   `50/50` then `Ask COM` -> The computer will only choose between the two answers present
     -   `Ask COM` then `50/50` -> If the computer suggested an incorrect answer, then the two other incorrect answers will be removed, leaving the correct answer and the suggested incorrect answer
+
+### Extra
+
+-   Sound effects
+    -   Play when the user clicks on an answer (seperate sounds for correct and incorrect answers)
+-   Music
+    -   Music automatically plays when the page loads
+    -   There is a button the user can click on to toggle the music on and off
