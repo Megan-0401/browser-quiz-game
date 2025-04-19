@@ -21,8 +21,7 @@ export const correctAnswer = (
 	button.style.border = "2px solid #289683";
 	button.style.color = "#136b5c";
 	message.innerText = "Correct! Great job";
-	let audioSrc = "audio/correct.mp3";
-	playSound(audio, audioSrc);
+	playSound(audio);
 };
 
 export const incorrectAnswer = (
@@ -34,12 +33,10 @@ export const incorrectAnswer = (
 	button.style.border = "2px solid #c7576f";
 	button.style.color = "#9b364c";
 	message.innerText = "Better luck next time";
-	let audioSrc = "audio/incorrect.mp3";
-	playSound(audio, audioSrc);
+	playSound(audio);
 };
 
-const playSound = async (audio: HTMLAudioElement, audioSrc: string) => {
-	audio.src = await audioSrc;
-	audio.volume = 0.5;
-	await audio.play();
+const playSound = (audio: HTMLAudioElement) => {
+	audio.volume = 0.6;
+	audio.play();
 };

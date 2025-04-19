@@ -44,7 +44,8 @@ const menuScreen = document.querySelector<HTMLDivElement>("#menuScreen");
 const startBtn = document.querySelector<HTMLButtonElement>("#startBtn");
 const quizDisplay = document.querySelector<HTMLElement>(".whole-display");
 
-const soundEffect = document.querySelector<HTMLAudioElement>("#soundEffect");
+const sfxCorrect = document.querySelector<HTMLAudioElement>("#sfxCorrect");
+const sfxIncorrect = document.querySelector<HTMLAudioElement>("#sfxIncorrect");
 const bgMusic = document.querySelector<HTMLAudioElement>("#music");
 const muteMusicBtn = document.querySelector<HTMLButtonElement>("#muteMusic");
 
@@ -61,7 +62,8 @@ if (
 	!menuScreen ||
 	!startBtn ||
 	!quizDisplay ||
-	!soundEffect ||
+	!sfxCorrect ||
+	!sfxIncorrect ||
 	!bgMusic ||
 	!muteMusicBtn
 ) {
@@ -120,7 +122,7 @@ const displayMenu = () => {
 
 const playMusic = () => {
 	bgMusic.play();
-	bgMusic.volume = 0.1;
+	bgMusic.volume = 0.3;
 	bgMusic.loop = true;
 };
 
@@ -177,12 +179,12 @@ const handleAnswerButtonClick = (event: Event) => {
 	answerBtns.forEach((button) => greyOutButton(button));
 	//check if answer for current question is correct
 	if (target.innerText === getCorrectAnswer()) {
-		correctAnswer(target, message, soundEffect);
+		correctAnswer(target, message, sfxCorrect);
 		//update user score
 		userScore += 5;
 		score.innerText = `Score: ${userScore}`;
 	} else {
-		incorrectAnswer(target, message, soundEffect);
+		incorrectAnswer(target, message, sfxIncorrect);
 	}
 	// check if the current question is the last
 	if (currentQuestion === maxQuestion) {
