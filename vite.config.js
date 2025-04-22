@@ -1,5 +1,5 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-	base: "/browswer-quiz-game",
+	base: "https://megan-0401.github.io/browser-quiz-game/",
 });
